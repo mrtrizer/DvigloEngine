@@ -8,20 +8,23 @@ var sourcemaps = require("gulp-sourcemaps");
 var watchify = require("watchify");
 var batch = require("gulp-batch");
 
+var sourceRoot = "BabelTest/";
+
 function log(error) {
 	    console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
 	    this.emit("end");
 }
 
-function build(bundler)
+function build(bundler,done)
 {
 	bundler.bundle()
 	.pipe(source('app.js'))
 	.pipe(buffer())
 	.pipe(sourcemaps.init({ loadMaps: true }))
-	.pipe(sourcemaps.write("./",{sourceRoot:"BabelTest/"}))
+	.pipe(sourcemaps.write("./",{sourceRoot:sourceRoot}))
 	.on('error',log)
-	.pipe(gulp.dest("./bin"));
+	.pipe(gulp.dest("./bin"))
+	.on("end",done);
 }
 
 function createBundler()
@@ -32,26 +35,29 @@ function createBundler()
 		.require("./src/three.js",{expose:"three.js"});
 }
 
-gulp.task("build", function() {
-		build(createBundler());
+//Build all
+gulp.task("build",["js:build", "html:build"]);
+
+//Build JS
+gulp.task("js:build", function(done) {
+		build(createBundler(),done);
 });
 
-gulp.task("watch", function() {
-		var watch = watchify(createBundler());
-		watch.on("update",function() {
-			console.log("BUILDING");
-			build(watch);
-		});
-		gulp.watch("./src/*.html", batch(function(events,cb){
-			events
-			.on("data",function(){ 
-				console.log("HTML BUILDING"); 
-				gulp.start("html:build") })
-			.on("end",cb);	}));
-		build(watch);
-});
-
-gulp.task("html:build", function() {
+//Build HTML
+gulp.task("html:build", function(done) {
 	gulp.src("./src/*.html")
-	.pipe(gulp.dest("./bin/"));
+	.pipe(gulp.dest("./bin/"))
+	.on("end",done);
 });
+
+//Watch all
+gulp.task("watch", function() {
+		//Browserify + Watchify
+		var watch = watchify(createBundler());
+		watch.on("update", function() { gulp.start("js:build"); });
+		//HTML
+		gulp.watch("./src/*.html", ["html:build"]);
+		//Build on start
+		gulp.start("build");
+});
+
