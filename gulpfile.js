@@ -6,6 +6,7 @@ var buffer = require("vinyl-buffer");
 var rigger = require("gulp-rigger");
 var sourcemaps = require("gulp-sourcemaps");
 var watchify = require("watchify");
+var batch = require("gulp-batch");
 
 function log(error) {
 	    console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
@@ -41,5 +42,16 @@ gulp.task("watch", function() {
 			console.log("BUILDING");
 			build(watch);
 		});
+		gulp.watch("./src/*.html", batch(function(events,cb){
+			events
+			.on("data",function(){ 
+				console.log("HTML BUILDING"); 
+				gulp.start("html:build") })
+			.on("end",cb);	}));
 		build(watch);
+});
+
+gulp.task("html:build", function() {
+	gulp.src("./src/*.html")
+	.pipe(gulp.dest("./bin/"));
 });
