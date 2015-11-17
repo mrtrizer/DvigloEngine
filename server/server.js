@@ -11,10 +11,9 @@ var path = require('path');
 var fs = require('fs');
 var clientPath = process.argv[2];
 var projectPath = path.resolve(clientPath, "project.json");
-var pathStat = fs.statSync(projectPath);
-var absolutClientPath = path.resolve(process.cwd, path.dirname(process.argv[1]));
+var absoluteClientPath = path.resolve(process.cwd, path.dirname(process.argv[1]));
 
-if (!pathStat.isFile())
+if (!isExists(projectPath))
 {
 	console.log("Can't find project.json file in " + clientPath);
 	process.exit(2);
@@ -27,7 +26,7 @@ var handlers = {};
 
 var config = {
 	"server_http_port":80,
-	"engine_path":path.resolve(absolutClientPath,"engine")
+	"engine_path":path.resolve(absoluteClientPath,"engine")
 }
 
 console.log("Client dir: " + clientPath);
@@ -56,7 +55,28 @@ function startHTTP(route,config)
 	console.log("Server HTTP has been started on port: " + config.server_http_port);
 }
 
-var mimeTypes = {
+function isExists(name)
+{
+	var access = false;
+	try {
+		fs.accessSync(name,fs.R_OK);
+		access = true;
+	} 
+	catch (e) {}
+	return access;
+}
+
+function writeError(response, n, msg, httpStatus)
+{
+	console.log("ERROR #" + n + ": " + msg);
+	response.writeHead(httpStatus || 404, {'Content-Type': 'text/plain'});
+	response.write(JSON.stringify({error: n, msg: msg}));
+	response.end();
+}
+
+function writeFile(response, fileName)
+{
+	const mimeTypes = {
     "html": "text/html",
     "jpeg": "image/jpeg",
     "jpg": "image/jpeg",
@@ -64,59 +84,77 @@ var mimeTypes = {
     "js": "text/javascript",
     "css": "text/css",
     "mp3": "audio/mpeg mp3"};
+	var pathItems = path.extname(fileName).split(".");
+	var mimeType = mimeTypes[pathItems[pathItems.length - 1]];
+	response.writeHead(200, {'Content-Type': mimeType});
+	var fileStream = fs.createReadStream(fileName);
+	fileStream.pipe(response);
+}
 
-function  route(pname, request, response)
+function route(pname, request, response)
 {
 	var pathname = "";
-	console.log("FuncName: "+pname);
-	if(pathname.indexOf("/"))
-			pathname = pname.replace(/\/+/,"");
-	if (typeof handlers[pathname] === 'function') 
+	if(pname.indexOf("/") != -1)
+		pathname = pname.replace(/\/+/,"");
+	var isAvaliable = new Boolean(handlers[pathname]);
+	console.log("URL: " + pathname + " Direct handler:" + isAvaliable);
+	if (isAvaliable == false)
 	{
-		console.log("It is a function"); 
-		handlers[pathname](request,response);
-	}
-	else 
-	{
-		console.log(pathname);
-		if(typeof handlers[pathname] === 'string')
-			pathname = handlers[pathname];	
-		console.log(pathname);
-		console.log("It is not a function");
-		var fileName = path.resolve(absolutClientPath, pathname);
-		if(!fs.existsSync(fileName) && pathname.indexOf("*") != -1)
+		for (var handlerName in handlers)
 		{
-			var handler = pathname.substr(0,pathname.indexOf("*")+1);
-			if(typeof handlers[handler] == 'string')
+			console.log(handlerName);
+			if (handlerName.indexOf("*") != -1)
 			{
-				var relPath = pathname.substr(pathname.indexOf('*')+2,pathname.length);
-				pathname = handlers[handler];
-				pathname = path.resolve(absolutClientPath,pathname,relPath);
-				fileName = path.resolve(absolutClientPath, pathname);
+				console.log("****");
+				var n = 0;
+				while((n < pathname.length) && (n < handlerName.length)) {
+					console.log(handlerName[n]);
+					if (handlerName[n] == "*")
+					{
+						var relativePath = pathname.slice(n,pathname.length);
+						var fullPath = "";
+						if (path.isAbsolute(handlers[handlerName]))
+							fullPath = path.resolve(handlers[handlerName],relativePath);
+						else
+							fullPath = path.resolve(absoluteClientPath,handlers[handlerName],relativePath);
+						console.log("File path: " + fullPath);
+						if (!isExists(fullPath))
+						{
+							writeError(response, 101, "File not found: " + fullPath); 
+							return;
+						}
+						writeFile(response, fullPath);
+						return;
+					}
+					if (pathname[n] !== handlerName[n])
+						break;
+					n++;
+				} 			
 			}
 		}
-		
-		fs.exists(fileName, function(exists) {
-			if(!exists) {
-				console.log("No request handler found: " + pathname);
-				console.log("File not exists: " + fileName);
-				response.writeHead(404, {'Content-Type': 'text/plain'});
-				response.write('404 Not Found\n');
-				response.end();
-				return;
-			}
-			if (!fs.lstatSync(fileName).isFile())
-			{
-				response.writeHead(423, {'Content-Type': 'text/plain'});
-				response.write('423 Locked\n');
-				return;
-			}
-			var pathItems = path.extname(fileName).split(".");
-			var mimeType = mimeTypes[pathItems[pathItems.length - 1]];
-			response.writeHead(200, {'Content-Type': mimeType});
-			var fileStream = fs.createReadStream(fileName);
-			fileStream.pipe(response);
-		}); //fs.exists
+		writeError(response, 101, "File not found"); 
+		return;
+	}
+	if (typeof handlers[pathname] === 'function') 
+	{
+		handlers[pathname](request,response);
+		return;
+	}
+	if (typeof handlers[pathname] === 'string')
+	{
+		if (!isExists(handlers[pathname])) {
+			writeError(response, 101, "File not found: " + handlers[pathname]); 
+			return;
+		}
+
+		var fileName = "";
+		if (path.isAbsolute(handlers[pathname]))
+			fileName = handlers[pathname]; 
+		else
+			fileName = path.resolve(absoluteClientPath, handlers[pathname]);
+
+		console.log("File path: " + fileName);
+		writeFile(response, fileName); 	
 	}
 }//route
 
