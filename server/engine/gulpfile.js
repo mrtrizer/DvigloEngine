@@ -8,8 +8,6 @@ var sourcemaps = require("gulp-sourcemaps");
 var watchify = require("watchify");
 var batch = require("gulp-batch");
 
-var sourceRoot = "BabelTest/";
-
 function log(error) {
 	    console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
 	    this.emit("end");
@@ -20,8 +18,6 @@ function build(bundler,done)
 	bundler.bundle()
 	.pipe(source('app.js'))
 	.pipe(buffer())
-	.pipe(sourcemaps.init({ loadMaps: true }))
-	.pipe(sourcemaps.write("./",{sourceRoot:sourceRoot}))
 	.on('error',log)
 	.pipe(gulp.dest("./bin"))
 	.on("end",done);
@@ -29,10 +25,9 @@ function build(bundler,done)
 
 function createBundler()
 {
-	return browserify('./src/test.js', { debug: true })
+	return browserify('./src/engine.js')
 		.transform(babelify,{presets:["es2015"]})
-		.require("./src/test.js",{expose:"test"})
-		.require("./src/three.js",{expose:"three.js"});
+		.require("./src/three.js",{expose:"THREE.js"});
 }
 
 //Build all
@@ -54,7 +49,7 @@ gulp.task("html:build", function(done) {
 gulp.task("watch", function() {
 		//Browserify + Watchify
 		var watch = watchify(createBundler());
-		watch.on("update", function() { gulp.start("js:build"); });
+		watch.on("update", function(){ gulp.start("js:build");});
 		//HTML
 		gulp.watch("./src/*.html", ["html:build"]);
 		//Build on start

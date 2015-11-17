@@ -1,7 +1,7 @@
 {
-  "name": "babel_test",
+  "name": "test_project",
   "version": "1.0.0",
-  "description": "the test of the fucking babel with the fucking gulp.",
+  "description": "test project",
   "dependencies": {},
   "devDependencies": {
     "babelify": "^7.2.0",

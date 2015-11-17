@@ -1,0 +1,5 @@
+{
+	"client":"./bin/client/",
+	"server":"./bin/server/",
+	"res":"./res/"
+}

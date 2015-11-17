@@ -1,0 +1,16 @@
+<html>
+<head>
+	<script> function hello() { console.log("Hello"); } </script>
+	<script src="/engine.js"></script>
+	<script>
+		var engine = require("engine");
+		document.onload(function() {
+			engine.document = document;
+		});
+	</script>
+	<script src="/client.js"></script>
+</head>
+<body>
+Hello
+</body>
+</html>
