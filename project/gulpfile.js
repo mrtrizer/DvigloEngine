@@ -7,6 +7,7 @@ var rigger = require("gulp-rigger");
 var sourcemaps = require("gulp-sourcemaps");
 var watchify = require("watchify");
 var batch = require("gulp-batch");
+var babel = require('gulp-babel');
 
 function log(error) {
 	    console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
@@ -32,7 +33,7 @@ function createBundler()
 }
 
 //Build all
-gulp.task("build",["js:build", "html:build"]);
+gulp.task("build",["js:build", "html:build","server:babel:build","common:babel:build"]);
 
 //Build JS
 gulp.task("js:build", function(done) {
@@ -41,7 +42,21 @@ gulp.task("js:build", function(done) {
 
 //Build server
 gulp.task("server:babel:build", function(done) {
+		gulp.src("./server/handlers.js")
+		.pipe(babel({
+            presets: ['es2015']
+        }))
+		.pipe(gulp.dest("./bin/server/"))
+		.on("end",done);
+});
 
+gulp.task("common:babel:build", function(done) {
+		gulp.src("./common/common.js")
+		.pipe(babel({
+            presets: ['es2015']
+        }))
+		.pipe(gulp.dest("./bin/common/"))
+		.on("end",done);
 });
 
 //Build HTML

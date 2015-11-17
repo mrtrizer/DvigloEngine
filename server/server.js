@@ -12,6 +12,7 @@ var fs = require('fs');
 var clientPath = process.argv[2];
 var projectPath = path.resolve(clientPath, "project.json");
 var pathStat = fs.statSync(projectPath);
+var absolutClientPath = path.resolve(process.cwd, path.dirname(process.argv[1]));
 
 if (!pathStat.isFile())
 {
@@ -26,7 +27,7 @@ var handlers = {};
 
 var config = {
 	"server_http_port":80,
-	"engine_path":path.resolve(process.cwd, path.dirname(process.argv[1]),"engine")
+	"engine_path":path.resolve(absolutClientPath,"engine")
 }
 
 console.log("Client dir: " + clientPath);
@@ -64,11 +65,12 @@ var mimeTypes = {
     "css": "text/css",
     "mp3": "audio/mpeg mp3"};
 
-route  = function (pathname, request, response)
+function  route(pname, request, response)
 {
-	console.log("FuncName: "+pathname);
+	var pathname = "";
+	console.log("FuncName: "+pname);
 	if(pathname.indexOf("/"))
-			pathname = pathname.replace(/\/+/,"");
+			pathname = pname.replace(/\/+/,"");
 	if (typeof handlers[pathname] === 'function') 
 	{
 		console.log("It is a function"); 
@@ -76,9 +78,24 @@ route  = function (pathname, request, response)
 	}
 	else 
 	{
+		console.log(pathname);
+		if(typeof handlers[pathname] === 'string')
+			pathname = handlers[pathname];	
+		console.log(pathname);
 		console.log("It is not a function");
-		var fileName = path.join(process.cwd(), pathname);
-
+		var fileName = path.resolve(absolutClientPath, pathname);
+		if(!fs.existsSync(fileName) && pathname.indexOf("*") != -1)
+		{
+			var handler = pathname.substr(0,pathname.indexOf("*")+1);
+			if(typeof handlers[handler] == 'string')
+			{
+				var relPath = pathname.substr(pathname.indexOf('*')+2,pathname.length);
+				pathname = handlers[handler];
+				pathname = path.resolve(absolutClientPath,pathname,relPath);
+				fileName = path.resolve(absolutClientPath, pathname);
+			}
+		}
+		
 		fs.exists(fileName, function(exists) {
 			if(!exists) {
 				console.log("No request handler found: " + pathname);
@@ -105,7 +122,11 @@ route  = function (pathname, request, response)
 
 function startServer()
 {
-	handlers = require(path.resolve(clientPath, projectConfig.server)).handlers;
+	handlers = require(path.resolve(clientPath, projectConfig.server)).handlers;	
+	handlers["index.html"] = "./engine/bin/index.html";
+	handlers["engine.js"] = "./engine/bin/app.js" 
+	handlers["app.js"] = path.resolve(clientPath,projectConfig.client);
+	handlers["res/*"] = path.resolve(clientPath,projectConfig.res);
 	startHTTP(route,config);
 }
 

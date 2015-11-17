@@ -4,6 +4,7 @@ export var handlers = {
 	"init":init
 };
 
+
 function init(request, responce)
 {
 
