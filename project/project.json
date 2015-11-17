@@ -1,5 +1,5 @@
 {
-	"client":"./bin/client/",
-	"server":"./bin/server/",
+	"client":"./bin/client/app.js",
+	"server":"./bin/server/handlers.js",
 	"res":"./res/"
 }

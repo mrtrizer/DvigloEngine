@@ -1,4 +1,4 @@
-import * as common from "common/common.js";
+import * as common from "../common/common.js";
 
 export var handlers = {
 	"init":init

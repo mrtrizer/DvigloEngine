@@ -39,6 +39,11 @@ gulp.task("js:build", function(done) {
 		build(createBundler(),done);
 });
 
+//Build server
+gulp.task("server:babel:build", function(done) {
+
+});
+
 //Build HTML
 gulp.task("html:build", function(done) {
 	gulp.src("./src/*.html")
