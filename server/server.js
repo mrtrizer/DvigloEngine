@@ -64,11 +64,12 @@ var mimeTypes = {
     "css": "text/css",
     "mp3": "audio/mpeg mp3"};
 
-route  = function (pathname, request, response)
+function  route(pname, request, response)
 {
-	console.log("FuncName: "+pathname);
+	var pathname = "";
+	console.log("FuncName: "+pname);
 	if(pathname.indexOf("/"))
-			pathname = pathname.replace(/\/+/,"");
+			pathname = pname.replace(/\/+/,"");
 	if (typeof handlers[pathname] === 'function') 
 	{
 		console.log("It is a function"); 
