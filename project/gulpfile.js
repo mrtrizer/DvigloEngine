@@ -16,6 +16,7 @@ function log(error) {
 
 function build(bundler,done)
 {
+	console.log("JS Building ...");
 	bundler.bundle()
 	.pipe(source('app.js'))
 	.pipe(buffer())
@@ -23,12 +24,12 @@ function build(bundler,done)
 	.pipe(sourcemaps.write("./",{sourceRoot:"./"}))
 	.on('error',log)
 	.pipe(gulp.dest("./bin/client"))
-	.on("end",done);
+	.on("end",function(){if (done) done()});
 }
 
-function createBundler()
+function createBundler(plugin)
 {
-	return browserify('./client/test.js', { debug: true })
+	return browserify('./client/test.js', { debug: true,  plugin: (plugin || [])})
 		.require("./client/test.js", {expose: "app"})
 		.transform(babelify,{presets:["es2015"]})
 }
@@ -68,13 +69,12 @@ gulp.task("html:build", function(done) {
 });
 
 //Watch all
-gulp.task("watch", function() {
+gulp.task("watch", function(done) {
 		//Browserify + Watchify
-		var watch = watchify(createBundler());
-		watch.on("update", function(){ gulp.start("js:build");});
+		var bundler = createBundler([watchify]);
+		bundler.on("update", function(){ build(bundler)});
+		build(bundler,done);
 		//HTML
 		gulp.watch("./src/*.html", ["html:build"]);
-		//Build on start
-		gulp.start("build");
 });
 

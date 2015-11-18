@@ -38,9 +38,16 @@ function execGulp(dir,task,name,done)
 	function write (data){
 		process.stdout.write("[" + name + "] " + data)
 	};
-	gulp.stdout.on("data",write);
+	gulp.stdout.on("data",function(data) 
+	{
+		write(data)
+		var str = new String(data);
+		if ((str.indexOf("Finished") != -1) && (str.indexOf(task) != -1))
+			done();
+	});
 	gulp.stderr.on("data",write);
-	gulp.stdout.on("close",done);
+	if (typeof(done) === "function")
+		gulp.stdout.on("close",done);
 }
 
 function startHTTP(route,config)
@@ -175,11 +182,12 @@ function buildAll(done)
 	var n = 2;
 	function ready()
 	{
+		console.log("READY");
 		if (--n == 0)
 			done()
 	}
-	execGulp(config.engine_path,"build","engine",ready);
-	execGulp(clientPath,"build","client",ready);
+	execGulp(config.engine_path,"watch","engine",ready);
+	execGulp(clientPath,"watch","client",ready);
 }
 
 buildAll(startServer);

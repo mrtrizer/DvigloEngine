@@ -1,7 +1,7 @@
-console.log("Hello, World!!!");
 export function main()
 {
 	var img = new Image();
 	img.src = "/res/logo.png";
-	engine.document.body.appendChild(img);
+	img.width = 200;
+	engine.document.body.appendChild(img); 
 }

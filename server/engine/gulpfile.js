@@ -15,17 +15,18 @@ function log(error) {
 
 function build(bundler,done)
 {
+	console.log("JS Building ...");
 	bundler.bundle()
 	.pipe(source('app.js'))
 	.pipe(buffer())
 	.on('error',log)
 	.pipe(gulp.dest("./bin"))
-	.on("end",done);
+	.on("end",function(){if (done) done()});
 }
 
-function createBundler()
+function createBundler(plugin)
 {
-	return browserify('./src/engine.js')
+	return browserify('./src/engine.js', {plugin: (plugin || [])})
 		.transform(babelify,{presets:["es2015"]})
 //Uncomment for work with THREE.js		.require("./src/three.js",{expose:"THREE.js"});
 		.require("./src/engine.js", {expose: "engine"})
@@ -47,13 +48,12 @@ gulp.task("html:build", function(done) {
 });
 
 //Watch all
-gulp.task("watch", function() {
+gulp.task("watch", function(done) {
 		//Browserify + Watchify
-		var watch = watchify(createBundler());
-		watch.on("update", function(){ gulp.start("js:build");});
+		var bundler = createBundler([watchify]);
+		bundler.on("update", function(){ build(bundler)});
+		build(bundler,done);
 		//HTML
 		gulp.watch("./src/*.html", ["html:build"]);
-		//Build on start
-		gulp.start("build");
 });
 
