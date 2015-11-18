@@ -33,22 +33,22 @@ function build(bundler, done)
 
 function createBundler(plugin)
 {
-	return browserify('./client/test.js', { debug: true,  plugin: (plugin || [])})
-		.require("./client/test.js", {expose: "app"})
+	return browserify('./src/client/test.js', { debug: true,  plugin: (plugin || [])})
+		.require("./src/client/test.js", {expose: "app"})
 		.transform(babelify,{presets:["es2015"]})
 }
 
 //Build all
 gulp.task("build",["js:build", "html:build","server:babel:build","common:babel:build"]);
 
-//Build JS
+//Build client
 gulp.task("js:build", function(done) {
 		build(createBundler(),done);
 });
 
 //Build server
 gulp.task("server:babel:build", function(done) {
-		gulp.src("./server/handlers.js")
+		gulp.src("./src/server/handlers.js")
 		.pipe(babel({
             presets: ['es2015']
         }))
@@ -56,20 +56,14 @@ gulp.task("server:babel:build", function(done) {
 		.on("end",done);
 });
 
+//Build common
 gulp.task("common:babel:build", function(done) {
-		gulp.src("./common/common.js")
+		gulp.src("./src/common/*")
 		.pipe(babel({
             presets: ['es2015']
         }))
 		.pipe(gulp.dest("./bin/common/"))
 		.on("end",done);
-});
-
-//Build HTML
-gulp.task("html:build", function(done) {
-	gulp.src("./src/*.html")
-	.pipe(gulp.dest("./bin/"))
-	.on("end",done);
 });
 
 //Watch all
@@ -78,7 +72,5 @@ gulp.task("watch", function(done) {
 		var bundler = createBundler([watchify]);
 		bundler.on("update", function(){ build(bundler)});
 		build(bundler,done);
-		//HTML
-		gulp.watch("./src/*.html", ["html:build"]);
 });
 

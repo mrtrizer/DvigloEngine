@@ -173,6 +173,7 @@ function startServer()
 	handlers["index.html"] = "./engine/bin/index.html";
 	handlers["engine.js"] = "./engine/bin/app.js" 
 	handlers["app.js"] = path.resolve(clientPath,projectConfig.client);
+	handlers["app.js.map"] = path.resolve(clientPath,projectConfig.client) + ".map";
 	handlers["res/*"] = path.resolve(clientPath,projectConfig.res);
 	startHTTP(route,config);
 }
