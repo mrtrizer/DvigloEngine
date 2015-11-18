@@ -22,7 +22,7 @@ function build(bundler, done)
 	.pipe(sourcemaps.init({ loadMaps: true }))
 	.pipe(sourcemaps.write("./",{sourceRoot:"./"}))
 	.on('error',log)
-	.pipe(gulp.dest("./bin/client"))
+	.pipe(gulp.dest("./bin/"))
 	.on("end",function(){
 			console.log("JS Building finish");
 			if (typeof(done) === "function") 
@@ -61,5 +61,6 @@ gulp.task("watch", function(done) {
 		build(bundler,done);
 		//HTML
 		gulp.watch("./src/*.html", ["html:build"]);
+		gulp.start("html:build");
 });
 
