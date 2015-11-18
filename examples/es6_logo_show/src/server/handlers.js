@@ -5,7 +5,6 @@ export var handlers = {
 	"test":test
 };
 
-
 function hello(request, response)
 {
 	response.writeHead(200, {'Content-Type': 'text/plain'});

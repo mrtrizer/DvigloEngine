@@ -42,11 +42,11 @@ var config = {
 console.log("Client dir: " + clientPath);
 console.log("Engine dir: " + config.engine_path);
 
-function execGulp(dir,task,name,done)
+function execGulp(dir,task,done)
 {
 	var gulp = childProcess.spawn("gulp", [task], {cwd:dir});
 	function write (data){
-		process.stdout.write("[" + name + "] " + data)
+		process.stdout.write(data)
 	};
 	gulp.stdout.on("data",write);
 	gulp.stderr.on("data",write);
@@ -195,7 +195,7 @@ function startServer()
 
 function buildAll(done)
 {
-	execGulp(config.engine_path,"watch","engine");
+	execGulp(config.engine_path,"watch");
 	initGulp(clientPath,projectConfig);
 	gulp.start("watch");
 	startServer();
