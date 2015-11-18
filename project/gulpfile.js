@@ -39,7 +39,7 @@ function createBundler(plugin)
 }
 
 //Build all
-gulp.task("build",["js:build", "html:build","server:babel:build","common:babel:build"]);
+gulp.task("build",["js:build", "server:babel:build","common:babel:build"]);
 
 //Build client
 gulp.task("js:build", function(done) {
