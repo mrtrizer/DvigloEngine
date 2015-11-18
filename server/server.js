@@ -148,7 +148,11 @@ function route(pname, request, response)
 	}
 	if (typeof handlers[pathName] === 'function') 
 	{
-		handlers[pathName](request,response);
+		try {
+			handlers[pathName](request,response);
+		} catch (error) {
+			console.log(error);
+		}
 		return;
 	}
 	if (typeof handlers[pathName] === 'string')
@@ -172,7 +176,11 @@ function route(pname, request, response)
 function updateHandlers()
 {
 	console.log("Handler updating");
-	handlers = reload(path.resolve(clientPath, ".bin/server/", path.basename(projectConfig.server))).handlers;	
+	try {
+		handlers = reload(path.resolve(clientPath, ".bin/server/", path.basename(projectConfig.server))).handlers;	
+	} catch (error) {
+		console.log(error);
+	}
 	handlers["index.html"] = "./engine/bin/index.html";
 	handlers["engine.js"] = "./engine/bin/app.js" 
 	handlers["app.js"] = path.resolve(clientPath,".bin/client/app.js");
