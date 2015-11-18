@@ -1,5 +1,6 @@
 {
-	"client":"./bin/client/app.js",
-	"server":"./bin/server/handlers.js",
-	"res":"./res/"
+	"client":"./src/client/test.js",
+	"server":"./src/server/handlers.js",
+	"common":"./src/common/",
+	"res":"./src/res/*"
 }
