@@ -10,8 +10,8 @@ var batch = require("gulp-batch");
 var babel = require('gulp-babel');
 
 function log(error) {
-	    console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
-	    this.emit("end");
+	console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
+	this.emit("end");
 }
 
 function build(bundler, done)
