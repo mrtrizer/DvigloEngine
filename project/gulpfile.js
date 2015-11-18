@@ -14,9 +14,9 @@ function log(error) {
 	    this.emit("end");
 }
 
-function build(bundler,done)
+function build(bundler, done)
 {
-	console.log("JS Building ...");
+	console.log("JS Building start");
 	bundler.bundle()
 	.pipe(source('app.js'))
 	.pipe(buffer())
@@ -24,7 +24,11 @@ function build(bundler,done)
 	.pipe(sourcemaps.write("./",{sourceRoot:"./"}))
 	.on('error',log)
 	.pipe(gulp.dest("./bin/client"))
-	.on("end",function(){if (done) done()});
+	.on("end",function(){
+			console.log("JS Building finish");
+			if (typeof(done) === "function") 
+				done()
+		} );
 }
 
 function createBundler(plugin)
