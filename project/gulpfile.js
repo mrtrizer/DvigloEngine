@@ -29,6 +29,7 @@ function build(bundler,done)
 function createBundler()
 {
 	return browserify('./client/test.js', { debug: true })
+		.require("./client/test.js", {expose: "app"})
 		.transform(babelify,{presets:["es2015"]})
 }
 

@@ -28,6 +28,7 @@ function createBundler()
 	return browserify('./src/engine.js')
 		.transform(babelify,{presets:["es2015"]})
 //Uncomment for work with THREE.js		.require("./src/three.js",{expose:"THREE.js"});
+		.require("./src/engine.js", {expose: "engine"})
 }
 
 //Build all

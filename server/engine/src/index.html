@@ -4,13 +4,17 @@
 	<script src="/engine.js"></script>
 	<script>
 		var engine = require("engine");
-		document.onload(function() {
-			engine.document = document;
-		});
 	</script>
-	<script src="/client.js"></script>
+	<script src="/app.js"></script>
+	<script>
+		var app = require("app");
+		function init() {
+			engine.document = document;
+			app.main();
+		};
+	</script>
 </head>
-<body>
-Hello
+<body onload="init()">
+
 </body>
 </html>

@@ -47,9 +47,9 @@ function startHTTP(route,config)
 {
 	function onRequest(request, response) 
 	{
-		var pathname = url.parse(request.url).pathname;
-		console.log("HTTP Request for " + pathname + " received.");
-		route(pathname, request, response);
+		var pathName = url.parse(request.url).pathname;
+		console.log("HTTP Request for " + pathName + " received.");
+		route(pathName, request, response);
 	}
 	http.createServer(onRequest).listen(config.server_http_port);
 	console.log("Server HTTP has been started on port: " + config.server_http_port);
@@ -74,16 +74,21 @@ function writeError(response, n, msg, httpStatus)
 	response.end();
 }
 
+function fileNotFound(response)
+{
+	writeError(response, 101, "404 File not found"); 
+}
+
 function writeFile(response, fileName)
 {
 	const mimeTypes = {
-    "html": "text/html",
-    "jpeg": "image/jpeg",
-    "jpg": "image/jpeg",
-    "png": "image/png",
-    "js": "text/javascript",
-    "css": "text/css",
-    "mp3": "audio/mpeg mp3"};
+		"html": "text/html",
+		"jpeg": "image/jpeg",
+		"jpg": "image/jpeg",
+		"png": "image/png",
+		"js": "text/javascript",
+		"css": "text/css",
+		"mp3": "audio/mpeg mp3"};
 	var pathItems = path.extname(fileName).split(".");
 	var mimeType = mimeTypes[pathItems[pathItems.length - 1]];
 	response.writeHead(200, {'Content-Type': mimeType});
@@ -93,25 +98,22 @@ function writeFile(response, fileName)
 
 function route(pname, request, response)
 {
-	var pathname = "";
+	var pathName = "";
 	if(pname.indexOf("/") != -1)
-		pathname = pname.replace(/\/+/,"");
-	var isAvaliable = new Boolean(handlers[pathname]);
-	console.log("URL: " + pathname + " Direct handler:" + isAvaliable);
+		pathName = pname.replace(/\/+/,"");
+	var isAvaliable = new Boolean(handlers[pathName]);
+	console.log("URL: " + pathName + " Direct handler:" + isAvaliable);
 	if (isAvaliable == false)
 	{
 		for (var handlerName in handlers)
 		{
-			console.log(handlerName);
 			if (handlerName.indexOf("*") != -1)
 			{
-				console.log("****");
 				var n = 0;
-				while((n < pathname.length) && (n < handlerName.length)) {
-					console.log(handlerName[n]);
+				while((n < pathName.length) && (n < handlerName.length)) {
 					if (handlerName[n] == "*")
 					{
-						var relativePath = pathname.slice(n,pathname.length);
+						var relativePath = pathName.slice(n,pathName.length);
 						var fullPath = "";
 						if (path.isAbsolute(handlers[handlerName]))
 							fullPath = path.resolve(handlers[handlerName],relativePath);
@@ -120,38 +122,38 @@ function route(pname, request, response)
 						console.log("File path: " + fullPath);
 						if (!isExists(fullPath))
 						{
-							writeError(response, 101, "File not found: " + fullPath); 
+							fileNotFound(response);
 							return;
 						}
 						writeFile(response, fullPath);
 						return;
 					}
-					if (pathname[n] !== handlerName[n])
+					if (pathName[n] !== handlerName[n])
 						break;
 					n++;
 				} 			
 			}
 		}
-		writeError(response, 101, "File not found"); 
+		fileNotFound(response);
 		return;
 	}
-	if (typeof handlers[pathname] === 'function') 
+	if (typeof handlers[pathName] === 'function') 
 	{
-		handlers[pathname](request,response);
+		handlers[pathName](request,response);
 		return;
 	}
-	if (typeof handlers[pathname] === 'string')
+	if (typeof handlers[pathName] === 'string')
 	{
-		if (!isExists(handlers[pathname])) {
-			writeError(response, 101, "File not found: " + handlers[pathname]); 
+		if (!isExists(handlers[pathName])) {
+			fileNotFound(response);
 			return;
 		}
 
 		var fileName = "";
-		if (path.isAbsolute(handlers[pathname]))
-			fileName = handlers[pathname]; 
+		if (path.isAbsolute(handlers[pathName]))
+			fileName = handlers[pathName]; 
 		else
-			fileName = path.resolve(absoluteClientPath, handlers[pathname]);
+			fileName = path.resolve(absoluteClientPath, handlers[pathName]);
 
 		console.log("File path: " + fileName);
 		writeFile(response, fileName); 	
