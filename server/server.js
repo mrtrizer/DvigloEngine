@@ -186,6 +186,10 @@ function updateHandlers()
 	handlers["app.js"] = path.resolve(clientPath,".bin/client/app.js");
 	handlers["app.js.map"] = path.resolve(clientPath,".bin/client/app.js.map");
 	handlers["res/*"] = path.resolve(clientPath,".bin/res/");
+	if (projectConfig.favicon)
+		handlers["favicon.ico"] = path.resolve(clientPath,"./favicon.ico");
+	else
+		handlers["favicon.ico"] = "./favicon.ico";
 }
 
 function startServer()

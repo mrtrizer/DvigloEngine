@@ -2,5 +2,6 @@
 	"client":"./src/client/test.js",
 	"server":"./src/server/handlers.js",
 	"common":"./src/common/",
-	"res":"./src/res/*"
+	"res":"./src/res/*",
+	"favicon":"./favicon.ico"
 }
