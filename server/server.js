@@ -157,16 +157,17 @@ function route(pname, request, response)
 	}
 	if (typeof handlers[pathName] === 'string')
 	{
-		if (!isExists(handlers[pathName])) {
-			fileNotFound(response);
-			return;
-		}
-
 		var fileName = "";
 		if (path.isAbsolute(handlers[pathName]))
 			fileName = handlers[pathName]; 
 		else
 			fileName = path.resolve(absoluteClientPath, handlers[pathName]);
+
+		if (!isExists(fileName)) {
+			fileNotFound(response);
+			console.log("File path: " + fileName);
+			return;
+		}
 
 		console.log("File path: " + fileName);
 		writeFile(response, fileName); 	
