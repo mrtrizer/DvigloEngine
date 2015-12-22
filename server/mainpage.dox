@@ -1,0 +1,4 @@
+/**
+* @mainpage ABEngine
+* node <b>\<path to abengine\></b>/server/server.js <b>\<project dir\></b>
+*/

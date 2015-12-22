@@ -42,6 +42,10 @@ var config = {
 console.log("Client dir: " + clientPath);
 console.log("Engine dir: " + config.engine_path);
 
+///Executes a gulp process and forwarding it's stdout and stderr
+///@param dir Workdir
+///@param task Task name
+///@param done Done callback
 function execGulp(dir,task,done)
 {
 	var gulp = childProcess.spawn("gulp", [task], {cwd:dir});
@@ -52,6 +56,9 @@ function execGulp(dir,task,done)
 	gulp.stderr.on("data",write);
 }
 
+///Starts HTTP server
+///@param route Route callback. See route()
+///@param config Config object
 function startHTTP(route,config)
 {
 	function onRequest(request, response) 
@@ -64,6 +71,7 @@ function startHTTP(route,config)
 	console.log("Server HTTP has been started on port: " + config.server_http_port);
 }
 
+///Checks is a file exists
 function isExists(name)
 {
 	var access = false;
@@ -75,6 +83,12 @@ function isExists(name)
 	return access;
 }
 
+///Writes an error with custom httpStatus
+///@details If httpStatus is not defined, writes 404 error code.
+///@param response Response object
+///@param n Application error number
+///@param msg Error message
+///@param httpStatus HTTP status (404 default)
 function writeError(response, n, msg, httpStatus)
 {
 	console.log("ERROR #" + n + ": " + msg);
@@ -83,11 +97,15 @@ function writeError(response, n, msg, httpStatus)
 	response.end();
 }
 
+///Just calls writeError() with 101 error code
 function fileNotFound(response)
 {
 	writeError(response, 101, "404 File not found"); 
 }
 
+///Writes a file to the response with MIME type
+///@param response Response link
+///@param fileName a file name
 function writeFile(response, fileName)
 {
 	const mimeTypes = {
@@ -105,6 +123,11 @@ function writeFile(response, fileName)
 	fileStream.pipe(response);
 }
 
+///Searches a file or handler by URL
+///@details If it can't find a file, it is trying to call a matching handler.
+///@param pname URL string
+///@param request Request object
+///@param response Response object
 function route(pname, request, response)
 {
 	var pathName = "";
@@ -174,6 +197,14 @@ function route(pname, request, response)
 	}
 }//route
 
+///Initializes a handler list
+///@details It trying load handlers from the project. 
+///And than it is adding default handler list.
+///Among them:
+///- index.html - main application page
+///- engine.js - client part of the engine
+///- app.js, app.js.map - client script of the application and a map for debugging
+///- res/* - application resource path
 function updateHandlers()
 {
 	console.log("Handler updating");
@@ -193,11 +224,16 @@ function updateHandlers()
 		handlers["favicon.ico"] = "./favicon.ico";
 }
 
+///Starts all configured servers
 function startServer()
 {
 	startHTTP(route,config);
 }
 
+///@addtogroup app_auto_build
+///@{
+
+///Invokes full rebuild and than starts a servers
 function buildAll(done)
 {
 	execGulp(config.engine_path,"watch");
@@ -206,6 +242,8 @@ function buildAll(done)
 	startServer();
 }
 
+///Gulp initialization.
+///Adding build and watch tasks
 function initGulp(projectPath,params)
 {
 	var serverPath = path.resolve(projectPath,path.dirname(params.server),"*.js");
@@ -235,7 +273,7 @@ function initGulp(projectPath,params)
 	gulp.task("server:babel:build", function(done) {
 			gulp.src(serverPath)
 			.pipe(babel({
-				presets: ['es2015']
+				presets: ['es2015'],
 			}))
 			.pipe(gulp.dest(path.resolve(projectPath,".bin/server/")))
 			.on("end",done)
@@ -246,7 +284,7 @@ function initGulp(projectPath,params)
 	gulp.task("common:babel:build", function(done) {
 			gulp.src(commonPath)
 			.pipe(babel({
-				presets: ['es2015']
+				presets: ['es2015'],
 			}))
 			.pipe(gulp.dest(path.resolve(projectPath,".bin/common/")))
 			.on("end",done)
@@ -303,6 +341,8 @@ function initGulp(projectPath,params)
 			.require(source, {expose: "app"})
 			.transform(babelify,{presets:["es2015"]})
 	}
-}
+}//initGulp
+
+///@}
 
 buildAll(startServer);
