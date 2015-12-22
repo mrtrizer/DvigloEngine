@@ -273,7 +273,7 @@ function initGulp(projectPath,params)
 	gulp.task("server:babel:build", function(done) {
 			gulp.src(serverPath)
 			.pipe(babel({
-				presets: ['es2015'],
+				presets: [require("babel-preset-es2015")],
 			}))
 			.pipe(gulp.dest(path.resolve(projectPath,".bin/server/")))
 			.on("end",done)
@@ -284,7 +284,7 @@ function initGulp(projectPath,params)
 	gulp.task("common:babel:build", function(done) {
 			gulp.src(commonPath)
 			.pipe(babel({
-				presets: ['es2015'],
+				presets: [require("babel-preset-es2015")],
 			}))
 			.pipe(gulp.dest(path.resolve(projectPath,".bin/common/")))
 			.on("end",done)
@@ -339,7 +339,7 @@ function initGulp(projectPath,params)
 	{
 		return browserify(source, { debug: true,  plugin: (plugin || [])})
 			.require(source, {expose: "app"})
-			.transform(babelify,{presets:["es2015"]})
+			.transform(babelify,{presets:[require("babel-preset-es2015")]})
 	}
 }//initGulp
 
