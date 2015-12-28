@@ -1,7 +1,7 @@
-export class Common {
-	constructor()
+export default class Common {
+	constructor(value)
 	{
-		this.value = 100;
+		this.value = value;
 	}
 	calc(factor)
 	{

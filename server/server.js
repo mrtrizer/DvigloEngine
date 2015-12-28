@@ -118,7 +118,11 @@ function writeFile(response, fileName)
 		"mp3": "audio/mpeg mp3"};
 	var pathItems = path.extname(fileName).split(".");
 	var mimeType = mimeTypes[pathItems[pathItems.length - 1]];
-	response.writeHead(200, {'Content-Type': mimeType});
+	response.writeHead(200, {
+		'Content-Type': mimeType,
+		'Cache-Control': 'no-cache, no-store, must-revalidate',
+		'Pragma': 'no-cache',
+		'Expires': '0'});
 	var fileStream = fs.createReadStream(fileName);
 	fileStream.pipe(response);
 }
@@ -314,19 +318,28 @@ function initGulp(projectPath,params)
 	
 	function log(error) {
 		console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
-		this.emit("end");
 	}
 
 	function build(bundler, done, name, dest)
 	{
+		function procError(error) {
+			console.log("JS Build error");
+			log(error); 
+			this.emit("end");
+			}
+		
 		console.log(dest);
 		console.log("JS Building start");
 		bundler.bundle()
+		.on('error',procError)
 		.pipe(source(name))
+		.on('error',procError)
 		.pipe(buffer())
+		.on('error',procError)
 		.pipe(sourcemaps.init({ loadMaps: true }))
+		.on('error',procError)
 		.pipe(sourcemaps.write("./",{sourceRoot:"./"}))
-		.on('error',log)
+		.on('error',procError)
 		.pipe(gulp.dest(dest))
 		.on("end",function(){
 				console.log("JS Building finish");

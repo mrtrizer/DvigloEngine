@@ -1,14 +1,16 @@
-import * as common from "../common/common.js";
+import Common from "../common/common.js";
 
 export var handlers = {
 	"hello":hello,
 	"test":test
 };
 
+var common = new Common(5);
+
 function hello(request, response)
 {
 	response.writeHead(200, {'Content-Type': 'text/plain'});
-	response.write("Hello, WORLD!!!");
+	response.write("Hello, WORLD!!!" + common.calc(1000));
 	response.end();
 }
 

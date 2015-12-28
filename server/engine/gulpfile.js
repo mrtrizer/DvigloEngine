@@ -8,9 +8,10 @@ var sourcemaps = require("gulp-sourcemaps");
 var watchify = require("watchify");
 var batch = require("gulp-batch");
 
-function log(error) {
-	    console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
-	    this.emit("end");
+function log(error) 
+{
+	console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
+	this.emit("end");
 }
 
 function build(bundler, done)
@@ -42,7 +43,7 @@ gulp.task("build",["js:build", "html:build"]);
 
 //Build JS
 gulp.task("js:build", function(done) {
-		build(createBundler(),done);
+	build(createBundler(),done);
 });
 
 //Build HTML
@@ -54,12 +55,12 @@ gulp.task("html:build", function(done) {
 
 //Watch all
 gulp.task("watch", function(done) {
-		//Browserify + Watchify
-		var bundler = createBundler([watchify]);
-		bundler.on("update", function(){ build(bundler)});
-		build(bundler,done);
-		//HTML
-		gulp.watch("./src/*.html", ["html:build"]);
-		gulp.start("html:build");
+	//Browserify + Watchify
+	var bundler = createBundler([watchify]);
+	bundler.on("update", function(){ build(bundler)});
+	build(bundler,done);
+	//HTML
+	gulp.watch("./src/*.html", ["html:build"]);
+	gulp.start("html:build");
 });
 
