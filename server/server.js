@@ -42,20 +42,6 @@ var config = {
 console.log("Client dir: " + clientPath);
 console.log("Engine dir: " + config.engine_path);
 
-///Executes a gulp process and forwarding it's stdout and stderr
-///@param dir Workdir
-///@param task Task name
-///@param done Done callback
-function execGulp(dir,task,done)
-{
-	var gulp = childProcess.spawn("gulp", [task], {cwd:dir});
-	function write (data){
-		process.stdout.write(data)
-	};
-	gulp.stdout.on("data",write);
-	gulp.stderr.on("data",write);
-}
-
 ///Starts HTTP server
 ///@param route Route callback. See route()
 ///@param config Config object
@@ -67,8 +53,9 @@ function startHTTP(route,config)
 		console.log("HTTP Request for " + pathName + " received.");
 		route(pathName, request, response);
 	}
-	http.createServer(onRequest).listen(config.server_http_port);
+	http.createServer(onRequest).listen(config.server_http_port, function(){
 	console.log("Server HTTP has been started on port: " + config.server_http_port);
+	});
 }
 
 ///Checks is a file exists
@@ -240,7 +227,6 @@ function startServer()
 ///Invokes full rebuild and than starts a servers
 function buildAll(done)
 {
-	execGulp(config.engine_path,"watch");
 	initGulp(clientPath,projectConfig);
 	gulp.start("watch");
 	startServer();
