@@ -1,6 +1,6 @@
-import LeafDOMElement from "leaf_dom_element.js";
+import LeafDOMObject from "leaf_dom_object.js";
 
-export default class LeafCanvas extends LeafDOMElement
+export default class LeafCanvas extends LeafDOMObject
 {
 	static getPropList() {
 		return {

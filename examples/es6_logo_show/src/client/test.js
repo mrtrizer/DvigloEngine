@@ -1,9 +1,8 @@
-import Common from "../common/common.js";
 import LeafCanvas from "./leaf_canvas.js";
 import LeafCanvasObject from "./leaf_canvas_object.js";
 import Leaf from "leaf.js"
 import LeafDOM from "leaf_dom.js"
-import LeafDOMElement from "leaf_dom_element.js"
+import LeafDOMObject from "leaf_dom_object.js"
 
 var objectTreeSource = { 
 	id: "root",
@@ -17,7 +16,7 @@ var objectTreeSource = {
 		{
 			leafs: [
 				{
-					lclass: "LeafDOMElement",
+					lclass: "LeafDOMObject",
 					data: {
 						type:"div",
 						style:"width:100px; height:100px, background-color:#666"}
@@ -29,7 +28,7 @@ var objectTreeSource = {
 			leafs: [
 				{
 					lclass: "LeafCanvas",
-					data: {}
+					data: {width: 100, height: 100}
 				}
 			],
 			objects: [
@@ -66,7 +65,7 @@ export function main() {
 		"LeafCanvasObject":LeafCanvasObject, 
 		"LeafCanvasImage":Leaf, 
 		"LeafDOM":LeafDOM, 
-		"LeafDOMElement":LeafDOMElement, 
+		"LeafDOMObject":LeafDOMObject, 
 		"Leaf":Leaf}
 	var objectTree = engine.loadTree(objectTreeSource, classList);
 	

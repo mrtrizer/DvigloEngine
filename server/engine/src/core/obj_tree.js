@@ -16,7 +16,7 @@ export default class ObjTree {
 	///@details It is important to remeber that method calls init for 
 	///all inherit chain.
 	///E.g.: For LeafDOM leaf class it will call init() this order:
-	///Leaf -> LeafDOMElement -> LeafDOM
+	///Leaf -> LeafDOMObject -> LeafDOM
 	initObject(object) {
 		for (let leaf of object.leafs) {
 			try {
@@ -57,7 +57,7 @@ export default class ObjTree {
 	}
 
 	///Returns inherit chain of the object as list of prototypes
-	///E.g.: For LeafDOM will retun [LeafDOM, LeafDOMElement, Leaf]
+	///E.g.: For LeafDOM will retun [LeafDOM, LeafDOMObject, Leaf]
 	getInheritChain_(obj) {
 		var parrentList = [];
 		var proto = Object.getPrototypeOf(obj);

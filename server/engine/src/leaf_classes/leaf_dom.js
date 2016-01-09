@@ -1,6 +1,6 @@
-import LeafDOMElement from "leaf_dom_element.js";
+import LeafDOMObject from "leaf_dom_object.js";
 
-export default class LeafDOM extends LeafDOMElement
+export default class LeafDOM extends LeafDOMObject
 {
 	static getPropList() {
 		return {
@@ -19,7 +19,7 @@ export default class LeafDOM extends LeafDOMElement
 	
 	onNewFrame() {
 		console.log("onNewFrame");
-		this.emitChildren("LeafDOMElement", "*", "render", {document: this.document});
+		this.emitChildren("LeafDOMObject", "*", "render", {document: this.document});
 		setTimeout(()=>this.onNewFrame(),200);
 		//window.requestAnimationFrame(() => this.onNewFrame());
 	}

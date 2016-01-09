@@ -1,5 +1,5 @@
-import Obj from "./common/obj.js"
-import ObjTree from "./common/obj_tree.js"
+import Obj from "./core/obj.js"
+import ObjTree from "./core/obj_tree.js"
 
 console.log("DVIGLO ENGINE v0.1.0");
 
