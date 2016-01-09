@@ -6,9 +6,9 @@ export var tools = toolsModule;
 export var document = null;
 
 class Obj {
-	constructor (tree,parent) {
-		this.tree = tree | null;
-		this.parrent = parent | null;
+	constructor (tree) {
+		this.tree = tree;
+		this.parrent = null;
 		this.objects = [];
 		this.leafs = [];
 	}
@@ -61,30 +61,41 @@ class Obj {
 class ObjTree {
 	
 	constructor(objTreeSrc, classList) {
-		this.root = Object.assign({},objTreeSrc);
 		this.classList = classList;
-		this.parseObject(this.root, null);
+		this.root = this.parseObject(objTreeSrc);
+		this.initObject(this.root);
 	}
 	
-	parseObjectsIn(object) {
-		for (var curObject of object.objects) {
-			this.parseObject(curObject, object);
-		}
-	}
-	
-	parseObject(object, parent) {
-		object.parent = parent;
+	initObject(object) {
 		for (var leaf of object.leafs) {
 			try {
-				leaf.instance = new this.classList[leaf.lclass](object,this);
-				Object.assign(leaf.instance, leaf.data);
 				leaf.instance.init();
 			} catch (e) {
 				console.log("Init error: ", e);
 			}
-			if (typeof(object.objects) === "object")
-				this.parseObjectsIn(object);
 		}
+		for (var curObject of object.objects) {
+			this.initObject(curObject)
+		}
+	}
+	
+	parseObject(src) {
+		var object = new Obj(this);
+		for (var leaf of src.leafs) {
+			try {
+				leaf.instance = new this.classList[leaf.lclass](object,this);
+				Object.assign(leaf.instance, leaf.data);
+				object.addLeaf(leaf);
+			} catch (e) {
+				console.log("Init error: ", e);
+			}
+		}
+		if (typeof(src.objects) === "object") {
+			for (var curObjectSrc of src.objects) {
+				object.addChild(this.parseObject(curObjectSrc, object));
+			}
+		}
+		return object;
 	}
 
 	///Searches an object among the whole tree by id
@@ -95,15 +106,16 @@ class ObjTree {
 	///Searches liaf in object using func for checking
 	findLeafInObj(object,func) {
 		for (var leaf of object.leafs)
-			if (func(leaf,leafClass))
+			if (func(leaf))
 				return leaf;
 		return false;
 	}
 
 	///Searches an object among the whole tree by leaf class
 	findObjByLeafClass(leafClass, root) {
-		return this.findObjBy_(root, function (object) {
-			return findLeafInObj(root, leaf => leaf.lclass == leafClass);
+		return this.findObjBy_(root, object => {
+			console.log(object);
+			return this.findLeafInObj(object, leaf => leaf.lclass == leafClass);
 		});
 	}
 	

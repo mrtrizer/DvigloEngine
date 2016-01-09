@@ -7,14 +7,9 @@ export default class LeafCanvas extends Leaf
 		}
 	}
 	
-	constructor ()
-	{
-		super();
-	}
-	
-	init()
-	{
+	init(){
 		console.log("LeafDOM initialized");
+		this.document = document;
 	}
 
 }

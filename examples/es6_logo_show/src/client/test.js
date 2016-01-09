@@ -11,16 +11,16 @@ var objectTreeSource = {
 	id: "root",
 	leafs: [
 		{
+			lclass: "LeafDOM",
+			data: {}
+		},
+		{
 			lclass: "LeafCanvas",
 			data: {
 				width: 500,
 				height: 400,
 				context: "2d"
 			}
-		},
-		{
-			lclass: "LeafDOM",
-			data: {}
 		}
 	],
 	objects: [
