@@ -87,12 +87,7 @@ export default class ObjTree {
 			curObj = obj.parent;
 		} while (curObj != null);
 	}
-	
-	///[Experimental] Seaches an object in a tree
-	findObj(leafClass, id) {
-		return this.findChildren(this.root, leafClass, id);
-	}
-	
+
 	///[Experimental] Emits an event to all listeners
 	emit(listeners,event) {
 		if (!Array.isArray(listeners))
@@ -106,12 +101,6 @@ export default class ObjTree {
 				leaf.procEvent(event);
 		}
 	}
-
-	///Searches an object among the whole tree by id
-	findObjById(id, root) {
-		var list = this.findObjBy_([root], object => object.id == id);
-		return list.length == 0? null : list[0];
-	}
 	
 	///Searches leaf in object using func for checking
 	findLeafsInObj(object,func) {
@@ -120,14 +109,6 @@ export default class ObjTree {
 			if (func(leaf))
 				list.push(leaf);
 		return list;
-	}
-
-	///Searches an object among the whole tree by leaf class
-	findObjByLeafClass(leafClass, root) {
-		var list = this.findObjBy_([root], object => {
-			return this.findLeafsInObj(object, leaf => leaf.lclass == leafClass).length > 0;
-		});
-		return list.length == 0? null : list[0];
 	}
 	
 	findObjBy_(objects, func) {
