@@ -9,17 +9,21 @@ export default class Obj {
 	
 	///[Experimental] Searches children
 	findChildren(leafClass, id) {
-		return this.tree.findChildren(leafClass, id, this);
+		return this.tree.findChildren(this, leafClass, id);
 	}
 
 	///[Experimental] Searches a parrent
 	findParent(leafClass, id, obj) {
-		return this.tree.findParent(leafClass, id, this);
+		return this.tree.findParent(this, leafClass, id);
 	}
 	
 	///[Experimental] Seaches an object in a tree
 	findObj(leafClass, id) {
-		return this.tree.findObj(leafClass, id);
+		return this.tree.findChildren(this.tree.root, leafClass, id);
+	}
+	
+	emit(listeners,event) {
+		return this.tree.emit(listeners,event);
 	}
 	
 	///Adds new leaf
@@ -35,8 +39,8 @@ export default class Obj {
 	}
 	
 	///Returns a leaf of current object by class
-	getLeafByClass(leafClass) {
-		return this.tree.findLeafInObj(this, leaf => leaf.lclass == leafClass);
+	getLeafsByClass(leafClass) {
+		return this.tree.findLeafsInObj(this, leaf => leaf.lclass == leafClass);
 	}
 	
 	///Returns a leaf of current object by id

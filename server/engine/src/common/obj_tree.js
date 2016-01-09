@@ -51,16 +51,18 @@ export default class ObjTree {
 		return parrentList
 	}
 
-	isFitToCondition_(leafClass, id, obj) {
+	isFitToCondition_(obj, leafClass, id) {
 		var fit = true;
+		leafClass = leafClass || "*";
+		id = id || "*";
 		if (leafClass != "*")
 		{
 			if (typeof(this.classList[leafClass]) !== "function")
 			{
 				console.log("WARNING: Leaf class", leafClass, "is not defined");
-				return false; //no corresponding leaf class in a list
+				return false;
 			}
-			fit = fit && this.findLeafInObj(obj, leaf => {
+			fit = fit && this.findLeafsInObj(obj, leaf => {
 				return leaf instanceof this.classList[leafClass]
 			}).length > 0;
 		}
@@ -70,19 +72,25 @@ export default class ObjTree {
 	}
 
 	///[Experimental] Searches children
-	findChildren(leafClass, id, obj) {
-		return this.findObjBy_([obj], obj => this.isFitToCondition_(leafClass, id, obj));
+	findChildren(obj, leafClass, id) {
+		return this.findObjBy_([obj], obj => this.isFitToCondition_(obj, leafClass, id));
 	}
 
 	///[Experimental] Searches a parrent
-	findParent(leafClass, id, obj) {
-		var list = this.findObjBy_([obj], obj => this.isFitToCondition_(leafClass, id, obj));
-		return list.length == 0 ? null: list[0];
+	findParent(obj, leafClass, id) {
+		if (typeof(obj) !== "object")
+			throw Error("Invalid object link");
+		var curObj = obj;
+		do {
+			if (this.isFitToCondition_(obj, leafClass, id))
+				return curObj;
+			curObj = obj.parent;
+		} while (curObj != null);
 	}
 	
 	///[Experimental] Seaches an object in a tree
 	findObj(leafClass, id) {
-		return this.findChildren(leafClass, id, this.root);
+		return this.findChildren(this.root, leafClass, id);
 	}
 	
 	///[Experimental] Emits an event to all listeners
@@ -106,7 +114,7 @@ export default class ObjTree {
 	}
 	
 	///Searches leaf in object using func for checking
-	findLeafInObj(object,func) {
+	findLeafsInObj(object,func) {
 		var list = [];
 		for (var leaf of object.leafs)
 			if (func(leaf))
@@ -117,7 +125,7 @@ export default class ObjTree {
 	///Searches an object among the whole tree by leaf class
 	findObjByLeafClass(leafClass, root) {
 		var list = this.findObjBy_([root], object => {
-			return this.findLeafInObj(object, leaf => leaf.lclass == leafClass).length > 0;
+			return this.findLeafsInObj(object, leaf => leaf.lclass == leafClass).length > 0;
 		});
 		return list.length == 0? null : list[0];
 	}

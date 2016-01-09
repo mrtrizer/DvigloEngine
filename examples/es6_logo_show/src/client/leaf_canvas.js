@@ -9,15 +9,14 @@ export default class LeafCanvas extends Leaf
 		}
 	}
 	
-	init()
-	{
-		console.log(this.object.findChildren("Leaf","ball"));
+	init() {
+		console.log(this.object.findChildren("LeafCanvasObject"));
 		console.log("LeafCanvas initialized");
 		console.log("w: " + this.width + " h: " + this.height);
-		var domObj = this.object.findObjByLeafClass("LeafDOM");
+		var domObj = this.object.findParent("LeafDOM");
 		if (typeof(domObj) !== "object")
 			throw new Error("No objects with a DOM leaf in the tree.");
-		var document = domObj.getLeafByClass("LeafDOM").document;
+		var document = domObj.getLeafsByClass("LeafDOM")[0].document;
 		this.cv = document.createElement('canvas');
 		this.cv.width = this.width;
 		this.cv.height = this.height;
@@ -25,13 +24,11 @@ export default class LeafCanvas extends Leaf
 		this.cx = this.cv.getContext("2d");
 	}
 	
-	render (arg)
-	{
+	render (arg) {
 		console.log("render canvas");
 	}
 	
-	mouse_event(arg)
-	{
+	mouse_event(arg) {
 		if (arg.type === "press")
 		{
 			this.genEvent("canvas_object", "click", {x: arg.x, y: arg.y});

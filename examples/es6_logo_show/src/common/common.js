@@ -1,10 +1,8 @@
 export default class Common {
-	constructor(value)
-	{
+	constructor(value) {
 		this.value = value;
 	}
-	calc(factor)
-	{
+	calc(factor) {
 		return this.value * factor;
 	}
 }

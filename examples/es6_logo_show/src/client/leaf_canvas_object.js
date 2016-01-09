@@ -9,25 +9,21 @@ export default class LeafCanvasObject extends Leaf
 		}
 	}
 	
-	init()
-	{
+	init() {
 		console.log("LeafCanvasObject initialized");
 		console.log("x: " + this.x + " y: " + this.y);
 		this.isSelected = false;
 	}
 	
-	render(arg)
-	{
+	render(arg) {
 	}
 	
-	move(arg)
-	{
+	move(arg) {
 		this.x = arg.x;
 		this.y = arg.y;
 	}
 	
-	click(arg)
-	{
+	click(arg) {
 		var size = {w:0,h:0};
 		var leafs = getLeafs("*");
 		for (var i in leafs) {
@@ -41,8 +37,7 @@ export default class LeafCanvasObject extends Leaf
 		}
 	}
 	
-	rectSelect(arg)
-	{
+	rectSelect(arg) {
 		if (isInRect({x:x,y:y},arg.rect))
 			isSelected = true;
 		else

@@ -14,7 +14,7 @@ export default class LeafDOM extends Leaf
 			throw new Error("Can't find window object");
 		console.log("LeafDOM initialized");
 		this.document = document;
-		//this.onNewFrame();
+		this.onNewFrame();
 	}
 	
 	onNewFrame() {
