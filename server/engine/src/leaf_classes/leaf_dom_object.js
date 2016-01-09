@@ -14,15 +14,22 @@ export default class LeafDOMObject extends Leaf
 		if (this.lclass != "LeafDOM") {
 			if (domObj === null)
 				throw new Error("LeafDOMObject has no parents. Add LeafDOM to the top of hierarchy.");
-			this.prevElement = domObj.getLeafsByClass("LeafDOMObject")[0];
+			this.parentElement = domObj.getLeafsByClass("LeafDOMObject")[0];
 		} else
-			this.prevElement = undefined;
-		
+			this.parentElement = undefined;
 		console.log("LeafDOM initialized");
 	}
 	
 	getDocument() {
-		return this.prevElement.getDocument();
+		return this.parentElement.getDocument();
+	}
+	
+	getParentElement() {
+		return this.parentElement;
+	}
+	
+	getElement() {
+		throw new Error("You should use LeafDOMElement ot it's children instead LeafDOMObject to use this method.");
 	}
 	
 	render () {

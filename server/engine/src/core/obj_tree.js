@@ -42,6 +42,9 @@ export default class ObjTree {
 		var object = new Obj(this,src);
 		for (let leafSrc of src.leafs) {
 			try {
+				if (typeof(this.classList[leafSrc.lclass]) !== "function")
+					throw new Error("Invalid leaf class: " + leafSrc.lclass + 
+									". Add a link to the class list.");
 				let leaf = new this.classList[leafSrc.lclass](object,this,leafSrc);
 				object.addLeaf(leaf);
 			} catch (e) {

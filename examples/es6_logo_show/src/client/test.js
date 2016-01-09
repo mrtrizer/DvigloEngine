@@ -6,6 +6,7 @@ import LeafDOMObject from "leaf_dom_object.js"
 import LeafCanvasGraphics from "./leaf_canvas_graphics.js";
 import LeafCanvasFigure from "./leaf_canvas_figure.js";
 import LeafCanvasRect from "./leaf_canvas_rect.js";
+import LeafDOMElement from "leaf_dom_element.js";
 
 var objectTreeSource = { 
 	id: "root",
@@ -13,18 +14,29 @@ var objectTreeSource = {
 		{
 			lclass: "LeafDOM",
 			data: {
-				update_period:500}
+				update_period:2000}
 		}
 	],
 	objects: [
 		{
 			leafs: [
 				{
-					lclass: "LeafDOMObject",
+					lclass: "LeafDOMElement",
 					data: {
 						type:"div",
-						style:"width:100px; height:100px, background-color:#666"}
+						style:"width:100px; height:100px; background-color:#666; left: 40px; top: 100px; position:absolute"}
 				}
+			],
+			objects: [
+					{
+						leafs: [
+							{
+								lclass: "LeafDOMElement",
+								data: {type:"div", 
+									style:"width:50px; height:50px; background-color:#222; left: 40px; position:absolute"}
+							}
+						]
+					}
 			]
 		},
 		{ 
@@ -89,6 +101,7 @@ export function main() {
 		"LeafCanvasImage":Leaf, 
 		"LeafDOM":LeafDOM, 
 		"LeafDOMObject":LeafDOMObject, 
+		"LeafDOMElement":LeafDOMElement, 
 		"Leaf":Leaf}
 	var objectTree = engine.loadTree(objectTreeSource, classList);
 	

@@ -14,6 +14,8 @@ export default class LeafDOM extends LeafDOMObject
 			throw new Error("Can't find window object");
 		console.log("LeafDOM initialized");
 		this.document = document;
+		this.document.body.style.margin = "0px";
+		this.document.body.style.padding = "0px";
 		this.onNewFrame();
 	}
 	
@@ -25,6 +27,10 @@ export default class LeafDOM extends LeafDOMObject
 	
 	getDocument() {
 		return this.document;
+	}
+	
+	getElement() {
+		return this.document.body;
 	}
 	
 	render() {
