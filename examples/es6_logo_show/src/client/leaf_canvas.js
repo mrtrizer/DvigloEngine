@@ -9,23 +9,20 @@ export default class LeafCanvas extends Leaf
 		}
 	}
 	
-	constructor ()
-	{
-		super();
-	}
-	
 	init()
 	{
 		console.log("LeafCanvas initialized");
 		console.log("w: " + this.width + " h: " + this.height);
-		//var dom = this.findObjByLeaf("DOM").getLeaf("DOM");
-		//this.cv = dom.document.createElement('canvas');
-		//this.cv.id = this.getId();
-		//this.cv.width = this.width;
-		//this.cv.height = this.height;
-		//dom.document.body.appendChild(canv);;
-		//this.cx = cv.getContext("2d");
-		//Start rendering here
+		var domObj = this.findObjByLeafClass("LeafDOM");
+		if (typeof(domObj) !== "object")
+			throw Error("No objects with a DOM leaf in the tree.");
+		var dom = domObj.getLeaf("LeafDOM").document;
+		this.cv = dom.document.createElement('canvas');
+		this.cv.id = this.getId();
+		this.cv.width = this.width;
+		this.cv.height = this.height;
+		dom.document.body.appendChild(canv);;
+		this.cx = cv.getContext("2d");
 	}
 	
 	render ()

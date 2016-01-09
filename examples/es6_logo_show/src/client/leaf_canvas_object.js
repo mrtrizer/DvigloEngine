@@ -9,11 +9,6 @@ export default class LeafCanvasObject extends Leaf
 		}
 	}
 	
-	constructor ()
-	{
-		super();
-	}
-	
 	init()
 	{
 		console.log("LeafCanvasObject initialized");
