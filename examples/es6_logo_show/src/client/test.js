@@ -10,7 +10,7 @@ var objectTreeSource = {
 	id: "root",
 	leafs: [
 		{
-			class: "LeafCanvas",
+			lclass: "LeafCanvas",
 			data: {
 				width: 500,
 				height: 400,
@@ -23,14 +23,14 @@ var objectTreeSource = {
 			id: "player",
 			leafs: [
 				{
-					class: "LeafCanvasObject",
+					lclass: "LeafCanvasObject",
 					data: {
 						x: 100,
 						y: 100
 					}
 				},
 				{
-					class: "LeafCanvasImage",
+					lclass: "LeafCanvasImage",
 					data: {
 						path: "image.png"
 					}

@@ -42,7 +42,7 @@ function build(bundler, done)
 
 function createBundler(plugin)
 {
-	return browserify('./src/engine.js', {plugin: (plugin || [])})
+	return browserify('./src/engine.js', {plugin: (plugin || []), paths: ["./src/leaf_classes","./src/tools"]})
 		.transform(babelify,{presets:["es2015"]})
 		.require("./src/engine.js", {expose: "engine"})
 }

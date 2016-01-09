@@ -18,7 +18,7 @@ export default class LeafCanvas extends Leaf
 	{
 		console.log("LeafCanvas initialized");
 		console.log("w: " + this.width + " h: " + this.height);
-		//var dom = this.findObjectUp("DOM").getLeaf("DOM");
+		//var dom = this.findObjByLeaf("DOM").getLeaf("DOM");
 		//this.cv = dom.document.createElement('canvas');
 		//this.cv.id = this.getId();
 		//this.cv.width = this.width;

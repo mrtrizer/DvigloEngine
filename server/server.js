@@ -362,8 +362,10 @@ function initGulp(projectPath,params)
 
 	function createAppBundler(source, plugin)
 	{
-		console.log(source);
-		return browserify(source, { debug: true,  plugin: (plugin || []), paths: [path.resolve(config.engine_path,"src/")]})
+		return browserify(source, { debug: true,  plugin: (plugin || []), paths: [
+				path.resolve(config.engine_path,"src/leaf_classes"),
+				path.resolve(config.engine_path,"src/tools")
+			]})
 			.require(source, {expose: "app"})
 			.transform(babelify,{presets:[require("babel-preset-es2015")]})
 	}
