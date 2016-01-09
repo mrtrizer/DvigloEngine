@@ -24,7 +24,15 @@ export default class Leaf {
 			this[event.method](event);
 	}
 	
+	findChildrenLieafs(leafClass, id) {
+		var objectList = this.object.findChildren(leafClass, id);
+		var leafList = [];
+		for (let object of objectList)
+			leafList = leafList.concat(object.getLeafsByClass(leafClass));
+		return leafList;
+	}
+	
 	emitChildren(leafClass, id, method, args = {}) {
-		this.object.emit(this.object.findChildren(leafClass, id), new LeafEvent(method, args));
+		this.object.emit(this.findChildrenLieafs(leafClass, id), new LeafEvent(method, args));
 	}
 }

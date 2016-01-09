@@ -3,13 +3,17 @@ import LeafCanvasObject from "./leaf_canvas_object.js";
 import Leaf from "leaf.js"
 import LeafDOM from "leaf_dom.js"
 import LeafDOMObject from "leaf_dom_object.js"
+import LeafCanvasGraphics from "./leaf_canvas_graphics.js";
+import LeafCanvasFigure from "./leaf_canvas_figure.js";
+import LeafCanvasRect from "./leaf_canvas_rect.js";
 
 var objectTreeSource = { 
 	id: "root",
 	leafs: [
 		{
 			lclass: "LeafDOM",
-			data: {}
+			data: {
+				update_period:500}
 		}
 	],
 	objects: [
@@ -41,6 +45,13 @@ var objectTreeSource = {
 								x: 100,
 								y: 100
 							}
+						},
+						{
+							lclass: "LeafCanvasRect",
+							data: {
+								x: 100,
+								y: 100
+							}
 						}
 					]
 				},
@@ -53,6 +64,13 @@ var objectTreeSource = {
 								x: 50,
 								y: 50
 							}
+						},
+						{
+							lclass: "LeafCanvasRect",
+							data: {
+								x: 100,
+								y: 100
+							}
 						}
 					]
 				}
@@ -64,6 +82,9 @@ var objectTreeSource = {
 export function main() {
 	var classList = {
 		"LeafCanvas":LeafCanvas, 
+		"LeafCanvasGraphics":LeafCanvasGraphics, 
+		"LeafCanvasFigure":LeafCanvasFigure, 
+		"LeafCanvasRect":LeafCanvasRect, 
 		"LeafCanvasObject":LeafCanvasObject, 
 		"LeafCanvasImage":Leaf, 
 		"LeafDOM":LeafDOM, 

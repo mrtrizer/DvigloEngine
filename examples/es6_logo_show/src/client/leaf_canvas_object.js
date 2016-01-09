@@ -17,10 +17,11 @@ export default class LeafCanvasObject extends Leaf
 	
 	render(e) {
 		console.log("render canvas object");
-		e.args.cx.lineWidth="6";
-		e.args.cx.strokeStyle="red";
-		e.args.cx.rect(this.x,this.y, 50,50);
-		e.args.cx.stroke(); 
+		e.args.cx.save();
+		e.args.cx.translate(this.x, this.y);
+		for (let leaf of this.object.getLeafsByClass("LeafCanvasGraphics"))
+			leaf.render(e.args.cx);
+		e.args.cx.restore();
 	}
 	
 	move(arg) {

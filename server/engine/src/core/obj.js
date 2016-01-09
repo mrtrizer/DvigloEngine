@@ -40,7 +40,7 @@ export default class Obj {
 	
 	///Returns a leaf of current object by class
 	getLeafsByClass(leafClass) {
-		return this.tree.findLeafsInObj(this, leaf => leaf instanceof this.tree.classList[leafClass]);
+		return this.tree.findLeafsInObjByClass(this, leafClass);
 	}
 	
 	///Returns a leaf of current object by id

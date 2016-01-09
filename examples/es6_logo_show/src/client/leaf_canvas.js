@@ -16,8 +16,9 @@ export default class LeafCanvas extends LeafDOMObject
 		this.cv = document.createElement('canvas');
 		this.cv.width = this.width;
 		this.cv.height = this.height;
-		document.body.appendChild(this.cv);
+		this.getDocument().body.appendChild(this.cv);
 		this.cx = this.cv.getContext("2d");
+		//window.requestAnimationFrame(() => this.onNewFrame());
 	}
 	
 	render (e) {

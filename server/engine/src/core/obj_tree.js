@@ -1,5 +1,5 @@
 import Obj from "./obj.js"
-import LeafEvent from "./event.js"
+import LeafEvent from "./leaf_event.js"
 import Leaf from "../leaf_classes/leaf.js"
 
 ///ObjTree implements a tree of game objects, 
@@ -68,6 +68,18 @@ export default class ObjTree {
 		return parrentList
 	}
 
+	///Returns a leaf of object by class
+	findLeafsInObjByClass(obj, leafClass) {
+		if (typeof(this.classList[leafClass]) !== "function")
+		{
+			console.log("WARNING: Leaf class", leafClass, "is not defined");
+			return [];
+		}
+		return this.findLeafsInObj(obj, leaf => {
+			return leaf instanceof this.classList[leafClass]
+		})
+	}
+
 	isFitToCondition_(obj, leafClass = "*", id = "*") {
 		var fit = true;
 		if (typeof(leafClass) !== "string")
@@ -76,14 +88,7 @@ export default class ObjTree {
 			throw new Error("id has to be a string");
 		if (leafClass != "*")
 		{
-			if (typeof(this.classList[leafClass]) !== "function")
-			{
-				console.log("WARNING: Leaf class", leafClass, "is not defined");
-				return false;
-			}
-			fit = fit && this.findLeafsInObj(obj, leaf => {
-				return leaf instanceof this.classList[leafClass]
-			}).length > 0;
+			fit = fit && this.findLeafsInObjByClass(obj, leafClass).length > 0;
 		}
 		if (id != "*")
 			fit = obj.id == id && fit;
@@ -115,9 +120,9 @@ export default class ObjTree {
 		if (!event instanceof LeafEvent)
 			throw new Error("Param event has to be an Event");
 		for (let listener of listeners) {
-			if (!event instanceof Leaf)
+			if (!listener instanceof Leaf)
 				throw new Error("All elements of listeners array have to be Leaf");
-			for (let leaf of listener.leafs)
+			for (let leaf of listeners)
 				leaf.procEvent(event);
 		}
 	}
