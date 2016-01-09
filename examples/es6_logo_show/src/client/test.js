@@ -4,9 +4,6 @@ import LeafCanvasObject from "./leaf_canvas_object.js";
 import Leaf from "leaf.js"
 import LeafDOM from "leaf_dom.js"
 
-var TOOLS = engine.tools;
-var client = new TOOLS.HTTPClient(TOOLS.Network.detectHost(),0,0,0);
-
 var objectTreeSource = { 
 	id: "root",
 	leafs: [

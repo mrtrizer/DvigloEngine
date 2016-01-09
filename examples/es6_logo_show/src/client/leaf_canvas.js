@@ -15,8 +15,8 @@ export default class LeafCanvas extends Leaf
 		console.log("w: " + this.width + " h: " + this.height);
 		var domObj = this.object.findObjByLeafClass("LeafDOM");
 		if (typeof(domObj) !== "object")
-			throw Error("No objects with a DOM leaf in the tree.");
-		var document = domObj.getLeafByClass("LeafDOM").instance.document;
+			throw new Error("No objects with a DOM leaf in the tree.");
+		var document = domObj.getLeafByClass("LeafDOM").document;
 		this.cv = document.createElement('canvas');
 		this.cv.width = this.width;
 		this.cv.height = this.height;
@@ -24,9 +24,9 @@ export default class LeafCanvas extends Leaf
 		this.cx = this.cv.getContext("2d");
 	}
 	
-	render ()
+	render (arg)
 	{
-		this.genEvent("LeafCanvasObject", "render", {cx: this.cx});
+		console.log("render canvas");
 	}
 	
 	mouse_event(arg)
