@@ -1,6 +1,6 @@
 if (process.argv.length < 3)
 {
-	console.log("Use:\n node server.js <project path>");
+	console.log("Use:\n node server.js <operation> [params]");
 	process.exit(1);
 }
 
@@ -19,28 +19,54 @@ var url = require('url');
 var path = require('path');
 var fs = require('fs');
 var reload = require('require-reload')(require);
-var clientPath = process.argv[2];
-var projectPath = path.resolve(clientPath, "project.json");
-var absoluteClientPath = path.resolve(process.cwd, path.dirname(process.argv[1]));
 
-if (!isExists(projectPath))
-{
-	console.log("Can't find project.json file in " + clientPath);
+var clientPath = null;
+var projectPath = null;
+var absoluteClientPath = null;
+var projectConfig = null;
+var handlers = null; 
+var config = null;
+
+var command = process.argv[2];
+if (command === "start") 
+	start();
+else {
+	console.log("Not implemented yet"); 
 	process.exit(2);
 }
 
-var projectConfig = JSON.parse(fs.readFileSync(projectPath));
-console.log(projectConfig);
+///Implements start operation
+function start()
+{
+	if (process.argv.length < 4)
+	{
+		console.log("Project path is empty");
+		process.exit(10);
+	}
+	clientPath = process.argv[3];
+	projectPath = path.resolve(clientPath, "project.json");
+	absoluteClientPath = path.resolve(process.cwd, path.dirname(process.argv[1]));
+	console.log(projectPath);
 
-var handlers = {}; 
+	if (!isExists(projectPath))
+	{
+		console.log("Can't find project.json file in " + clientPath);
+		process.exit(20);
+	}
 
-var config = {
-	"server_http_port":80,
-	"engine_path":path.resolve(absoluteClientPath,"engine")
+	projectConfig = JSON.parse(fs.readFileSync(projectPath));
+	console.log(projectConfig);
+
+	handlers = {}; 
+
+	config = {
+		"server_http_port":80,
+		"engine_path":path.resolve(absoluteClientPath,"engine")
+	}
+
+	console.log("Project dir: " + clientPath);
+	console.log("Engine dir: " + config.engine_path);
 }
-
-console.log("Client dir: " + clientPath);
-console.log("Engine dir: " + config.engine_path);
 
 ///Starts HTTP server
 ///@param route Route callback. See route()
@@ -336,7 +362,8 @@ function initGulp(projectPath,params)
 
 	function createAppBundler(source, plugin)
 	{
-		return browserify(source, { debug: true,  plugin: (plugin || [])})
+		console.log(source);
+		return browserify(source, { debug: true,  plugin: (plugin || []), paths: [path.resolve(config.engine_path,"src/")]})
 			.require(source, {expose: "app"})
 			.transform(babelify,{presets:[require("babel-preset-es2015")]})
 	}

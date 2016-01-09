@@ -1,24 +1,47 @@
 import Common from "../common/common.js";
+import LeafCanvas from "./leaf_canvas.js";
+import LeafCanvasObject from "./leaf_canvas_object.js";
+import Leaf from "leaf.js"
 
 var TOOLS = engine.tools;
 var client = new TOOLS.HTTPClient(TOOLS.Network.detectHost(),0,0,0);
 
-export function main()
-{
-	var img = new Image();
-	img.src = "/res/logo.png";
-	img.width = 250;
-	engine.document.body.appendChild(img); 
-	engine.document.body.innerHTML += "<br><h1>ABUKSIGUN</h1><br>";
-	engine.document.body.innerHTML += "<a href='/hello'>HELLO</a>";
-	console.log(TOOLS.MathTools.MD5("Hello, World!"));
-	var common = new Common(5);
-	console.log(common.calc(100));
-	client.sendRequest("hello",{},"GET",
-		function(data){
-			console.log(data)
-			},
-		function(error){
-			console.log(error)
-			});
+var objectTreeSource = { 
+	id: "root",
+	leafs: [
+		{
+			class: "LeafCanvas",
+			data: {
+				width: 500,
+				height: 400,
+				context: "2d"
+			}
+		}
+	],
+	objects: [
+		{
+			id: "player",
+			leafs: [
+				{
+					class: "LeafCanvasObject",
+					data: {
+						x: 100,
+						y: 100
+					}
+				},
+				{
+					class: "LeafCanvasImage",
+					data: {
+						path: "image.png"
+					}
+				}
+			]
+		}
+	]
+};
+
+export function main() {
+	var classList = {"LeafCanvas":LeafCanvas, "LeafCanvasObject":LeafCanvasObject, "LeafCanvasImage":Leaf}
+	var objectTree = engine.loadTree(objectTreeSource, classList);
+	
 }

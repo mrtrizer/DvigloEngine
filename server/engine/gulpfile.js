@@ -11,24 +11,33 @@ var batch = require("gulp-batch");
 function log(error) 
 {
 	console.log("[" + error.name + " in " + error.plugin + "] " + error.message);
-	this.emit("end");
 }
 
 function build(bundler, done)
 {
-	console.log("JS Building start");
-	bundler.bundle()
-	.pipe(source('app.js'))
-	.pipe(buffer())
-	.pipe(sourcemaps.init({ loadMaps: true }))
-	.pipe(sourcemaps.write("./",{sourceRoot:"./"}))
-	.on('error',log)
-	.pipe(gulp.dest("./bin/"))
-	.on("end",function(){
-			console.log("JS Building finish");
-			if (typeof(done) === "function") 
-				done()
-		} );
+		function procError(error) {
+			console.log("JS Build error");
+			log(error); 
+			this.emit("end");
+		};
+		
+		console.log("JS Building start");
+		bundler.bundle()
+		.on('error',procError)
+		.pipe(source('app.js'))
+		.on('error',procError)
+		.pipe(buffer())
+		.on('error',procError)
+		.pipe(sourcemaps.init({ loadMaps: true }))
+		.on('error',procError)
+		.pipe(sourcemaps.write("./",{sourceRoot:"./"}))
+		.on('error',procError)
+		.pipe(gulp.dest("./bin/"))
+		.on("end",function(){
+				console.log("JS Building finish");
+				if (typeof(done) === "function") 
+					done()
+			} );
 }
 
 function createBundler(plugin)
