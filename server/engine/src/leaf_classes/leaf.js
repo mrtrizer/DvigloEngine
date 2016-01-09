@@ -1,3 +1,5 @@
+import LeafEvent from "../common/event.js"
+
 export default class Leaf {
 	
 	constructor(object,tree,leafSrc) {
@@ -11,11 +13,18 @@ export default class Leaf {
 	}
 	
 	init() {
-		console.log("Leaf initialized");
+		console.log("Leaf initialized. Class:", this.lclass);
 	}
 	
-	genEvent(listeners,event) {
-		
+	initOwn() {
 	}
 	
+	procEvent(event) {
+		if (typeof(this[event.method]) === "function")
+			this[event.method](event);
+	}
+	
+	emitChildren(leafClass, id, method, args = {}) {
+		this.object.emit(this.object.findChildren(leafClass, id), new LeafEvent(method, args));
+	}
 }

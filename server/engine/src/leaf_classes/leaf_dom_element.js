@@ -8,19 +8,17 @@ export default class LeafDOMElement extends Leaf
 	}
 	
 	init() {
+		if (this.object.getLeafsByClass("LeafDOMElement").length > 1)
+			throw new Error("You can add only one LeafDOMElement in object.");
 		var domObj = this.object.findParent("LeafDOMElement");
-		var prevElement = null;
-		if (typeof(domObj) !== "object")
-		{
-			domObj = this.object.findParent("LeafDOM");
-			prevElement = domObj.getLeafsByClass("LeafDOMElement")[0].element;
-		}
-		else
-			prevElement = domObj.getLeafsByClass("LeafDOM")[0].document;
-		if (typeof(domObj) !== "object")
-			throw new Error("LeafDOMElement has no parents. Add LeafDOM to the top of hierarchy.");
+		if (this.lclass != "LeafDOM") {
+			if (domObj === null)
+				throw new Error("LeafDOMElement has no parents. Add LeafDOM to the top of hierarchy.");
+			this.prevElement = domObj.getLeafsByClass("LeafDOMElement")[0].document;
+		} else
+			this.prevElement = undefined;
+		
 		console.log("LeafDOM initialized");
-		this.prevElement = prevElement;
 	}
 	
 	render () {

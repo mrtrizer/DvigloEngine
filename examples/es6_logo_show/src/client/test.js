@@ -3,6 +3,7 @@ import LeafCanvas from "./leaf_canvas.js";
 import LeafCanvasObject from "./leaf_canvas_object.js";
 import Leaf from "leaf.js"
 import LeafDOM from "leaf_dom.js"
+import LeafDOMElement from "leaf_dom_element.js"
 
 var objectTreeSource = { 
 	id: "root",
@@ -10,50 +11,49 @@ var objectTreeSource = {
 		{
 			lclass: "LeafDOM",
 			data: {}
-		},
-		{
-			lclass: "LeafCanvas",
-			data: {
-				width: 500,
-				height: 400,
-				context: "2d"
-			}
 		}
 	],
 	objects: [
 		{
-			id: "player",
 			leafs: [
 				{
-					lclass: "LeafCanvasObject",
+					lclass: "LeafDOMElement",
 					data: {
-						x: 100,
-						y: 100
-					}
-				},
-				{
-					lclass: "LeafCanvasImage",
-					data: {
-						path: "image.png"
-					}
+						type:"div",
+						style:"width:100px; height:100px, background-color:#666"}
 				}
 			]
 		},
-		{
-			id: "ball",
+		{ 
+			id: "canvas",
 			leafs: [
 				{
-					lclass: "LeafCanvasObject",
-					data: {
-						x: 100,
-						y: 100
-					}
+					lclass: "LeafCanvas",
+					data: {}
+				}
+			],
+			objects: [
+				{
+					id: "player",
+					leafs: [
+						{
+							lclass: "LeafCanvasObject",
+							data: {
+								x: 100,
+								y: 100
+							}
+						}
+					]
 				},
 				{
-					lclass: "LeafCanvasImage",
-					data: {
-						path: "image.png"
-					}
+					id: "ball",
+					leafs: [
+						{
+							lclass: "LeafCanvasObject",
+							data: {
+							}
+						}
+					]
 				}
 			]
 		}
@@ -66,6 +66,7 @@ export function main() {
 		"LeafCanvasObject":LeafCanvasObject, 
 		"LeafCanvasImage":Leaf, 
 		"LeafDOM":LeafDOM, 
+		"LeafDOMElement":LeafDOMElement, 
 		"Leaf":Leaf}
 	var objectTree = engine.loadTree(objectTreeSource, classList);
 	

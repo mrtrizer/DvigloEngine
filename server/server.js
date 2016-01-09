@@ -148,7 +148,7 @@ function route(pname, request, response) {
     var isAvaliable = new Boolean(handlers[pathName]);
     console.log("URL: " + pathName + " Direct handler:" + isAvaliable);
     if (isAvaliable == false) {
-        for (var handlerName in handlers) {
+        for (let handlerName in handlers) {
             if (handlerName.indexOf("*") != -1) {
                 var n = 0;
                 while ((n < pathName.length) && (n < handlerName.length)) {

@@ -1,6 +1,6 @@
-import Leaf from "leaf.js";
+import LeafDOMElement from "leaf_dom_element.js";
 
-export default class LeafCanvas extends Leaf
+export default class LeafCanvas extends LeafDOMElement
 {
 	static getPropList() {
 		return {
@@ -13,10 +13,6 @@ export default class LeafCanvas extends Leaf
 		console.log(this.object.findChildren("LeafCanvasObject"));
 		console.log("LeafCanvas initialized");
 		console.log("w: " + this.width + " h: " + this.height);
-		var domObj = this.object.findParent("LeafDOM");
-		if (typeof(domObj) !== "object")
-			throw new Error("No objects with a DOM leaf in the tree.");
-		var document = domObj.getLeafsByClass("LeafDOM")[0].document;
 		this.cv = document.createElement('canvas');
 		this.cv.width = this.width;
 		this.cv.height = this.height;

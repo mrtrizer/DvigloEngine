@@ -26,8 +26,7 @@ export default class LeafCanvasObject extends Leaf
 	click(arg) {
 		var size = {w:0,h:0};
 		var leafs = getLeafs("*");
-		for (var i in leafs) {
-			var leaf = leafs[i];
+		for (let leaf of leafs) {
 			if (typeof(leaf.isSelecteble) === "function")
 				if (leaf.isSelecteble({x:arg.x - this.x,y:arg.y - this.y}))
 				{
