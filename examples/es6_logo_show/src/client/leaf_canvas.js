@@ -10,21 +10,27 @@ export default class LeafCanvas extends LeafDOMObject
 	}
 	
 	init() {
-		console.log(this.object.findChildren("LeafCanvasObject"));
-		console.log("LeafCanvas initialized");
-		console.log("w: " + this.width + " h: " + this.height);
 		this.cv = this.getDocument().createElement('canvas');
 		this.cv.width = this.width;
 		this.cv.height = this.height;
 		this.parentElement.getElement().appendChild(this.cv);
 		this.cx = this.cv.getContext("2d");
-		//window.requestAnimationFrame(() => this.onNewFrame());
+		this.onNewFrame();
 	}
 	
-	render (e) {
-		console.log("render canvas");
+	onNewFrame() {
+		this.renderCanvas();
+		this.getWindow().requestAnimationFrame(() => this.onNewFrame());
+	}
+	
+	///Special render method for canvas
+	renderCanvas() {
 		if (typeof(this.cx) === "object")
 			this.emitChildren("LeafCanvasObject", "*", "render", {cx: this.cx});
+	}
+	
+	///Render event listener
+	render (e) {
 	}
 	
 	mouse_event(arg) {

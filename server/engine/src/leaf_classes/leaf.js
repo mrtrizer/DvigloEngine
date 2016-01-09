@@ -2,6 +2,11 @@ import LeafEvent from "../core/leaf_event.js"
 
 export default class Leaf {
 	
+	static getPropList() {
+		return {
+		}
+	}
+	
 	constructor(object,tree,leafSrc) {
 		if (typeof(leafSrc.lclass) !== "string")
 			throw new Error("Leaf without lclass field.");
@@ -14,6 +19,21 @@ export default class Leaf {
 	
 	init() {
 		console.log("Leaf initialized. Class:", this.lclass);
+	}
+	
+	toJSON() {
+		var jsonData = {
+			lclass: this.lclass,
+			data: {}
+		};
+		var propList = this.constructor.getPropList();
+		for (let propName in propList)
+			if (this[propName] != undefined)
+				jsonData.data[propName] = this[propName];
+			else
+				jsonData.data[propName] = propList[propName].def || 0;
+				
+		return jsonData;
 	}
 	
 	initOwn() {

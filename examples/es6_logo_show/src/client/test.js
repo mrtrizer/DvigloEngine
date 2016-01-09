@@ -24,7 +24,7 @@ var objectTreeSource = {
 					lclass: "LeafDOMElement",
 					data: {
 						type:"div",
-						style:"width:100px; height:100px; background-color:#666; left: 40px; top: 100px; position:absolute"}
+						style:"width:100px; height:100px; background-color:#666; left: 300px; top: 0px; position:absolute"}
 				}
 			],
 			objects: [
@@ -33,7 +33,7 @@ var objectTreeSource = {
 							{
 								lclass: "LeafDOMElement",
 								data: {type:"div", 
-									style:"width:50px; height:50px; background-color:#222; left: 40px; position:absolute"}
+									style:"width:50px; height:50px; background-color:#222; left: 0px; position:absolute"}
 							}
 						]
 					}
@@ -54,15 +54,18 @@ var objectTreeSource = {
 						{
 							lclass: "LeafCanvasObject",
 							data: {
-								x: 100,
-								y: 100
+								x: 110,
+								y: 110
 							}
 						},
 						{
 							lclass: "LeafCanvasRect",
 							data: {
-								x: 100,
-								y: 100
+								x: 0,
+								y: 0,
+								width: 50,
+								height: 50,
+								fill_style: "blue"
 							}
 						}
 					]
@@ -80,8 +83,11 @@ var objectTreeSource = {
 						{
 							lclass: "LeafCanvasRect",
 							data: {
-								x: 100,
-								y: 100
+								x: 0,
+								y: 0,
+								width: 70,
+								height: 50,
+								fill_style: "green"
 							}
 						}
 					]
@@ -104,5 +110,5 @@ export function main() {
 		"LeafDOMElement":LeafDOMElement, 
 		"Leaf":Leaf}
 	var objectTree = engine.loadTree(objectTreeSource, classList);
-	
+	console.log(objectTree.toJSON()); 
 }

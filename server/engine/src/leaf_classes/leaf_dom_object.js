@@ -17,11 +17,14 @@ export default class LeafDOMObject extends Leaf
 			this.parentElement = domObj.getLeafsByClass("LeafDOMObject")[0];
 		} else
 			this.parentElement = undefined;
-		console.log("LeafDOM initialized");
 	}
 	
 	getDocument() {
-		return this.parentElement.getDocument();
+		return document;
+	}
+	
+	getWindow() {
+		return window;
 	}
 	
 	getParentElement() {
@@ -33,7 +36,6 @@ export default class LeafDOMObject extends Leaf
 	}
 	
 	render () {
-		console.log("render dom element");
 	}
 
 }

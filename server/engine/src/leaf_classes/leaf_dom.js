@@ -12,7 +12,6 @@ export default class LeafDOM extends LeafDOMObject
 			throw new Error("Can't find DOM object");
 		if (typeof(window) !== "object")
 			throw new Error("Can't find window object");
-		console.log("LeafDOM initialized");
 		this.document = document;
 		this.document.body.style.margin = "0px";
 		this.document.body.style.padding = "0px";
@@ -20,7 +19,6 @@ export default class LeafDOM extends LeafDOMObject
 	}
 	
 	onNewFrame() {
-		console.log("onNewFrame");
 		this.emitChildren("LeafDOMObject", "*", "render", {document: this.document});
 		setTimeout(()=>this.onNewFrame(), this.update_period || 1000);
 	}
@@ -34,7 +32,6 @@ export default class LeafDOM extends LeafDOMObject
 	}
 	
 	render() {
-		console.log("render dom");
 	}
 
 }

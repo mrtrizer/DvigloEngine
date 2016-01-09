@@ -2,10 +2,15 @@ import Leaf from "leaf.js";
 import MathTools from "tools.js";
 
 export default class LeafCanvasGraphics extends Leaf {
+	
+	static getPropList() {
+		return {
+		}
+	}
+	
 	render(cx) {
-		console.log("render canvas graphics");
-		cx.lineWidth="6";
-		cx.strokeStyle="red";
+		cx.lineWidth = "6";
+		cx.strokeStyle = "red";
 		cx.rect(this.x - 5,this.y - 5, 10,10);
 		cx.stroke(); 
 	}

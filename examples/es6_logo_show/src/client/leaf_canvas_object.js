@@ -10,13 +10,10 @@ export default class LeafCanvasObject extends Leaf
 	}
 	
 	init() {
-		console.log("LeafCanvasObject initialized");
-		console.log("x: " + this.x + " y: " + this.y);
 		this.isSelected = false;
 	}
 	
 	render(e) {
-		console.log("render canvas object");
 		e.args.cx.save();
 		e.args.cx.translate(this.x, this.y);
 		for (let leaf of this.object.getLeafsByClass("LeafCanvasGraphics"))

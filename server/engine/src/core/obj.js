@@ -7,6 +7,24 @@ export default class Obj {
 		this.id = objSrc.id || null;
 	}
 	
+	toJSON() {
+		var jsonData = {
+			leafs:[],
+			objects:[]
+		};
+		
+		if (typeof(this.id) === "string")
+			jsonData.id = this.id;
+			
+		for (let leaf of this.leafs)
+			jsonData.leafs.push(leaf.toJSON());
+		
+		for (let object of this.objects)
+			jsonData.objects.push(object.toJSON());
+		
+		return jsonData;
+	}
+	
 	///Searches children
 	findChildren(leafClass, id) {
 		return this.tree.findChildren(this, leafClass, id);

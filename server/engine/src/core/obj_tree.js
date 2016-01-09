@@ -59,6 +59,10 @@ export default class ObjTree {
 		return object;
 	}
 
+	toJSON() {
+		return this.root.toJSON();
+	}
+
 	///Returns inherit chain of the object as list of prototypes
 	///E.g.: For LeafDOM will retun [LeafDOM, LeafDOMObject, Leaf]
 	getInheritChain_(obj) {
