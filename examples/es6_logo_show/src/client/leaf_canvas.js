@@ -11,6 +11,7 @@ export default class LeafCanvas extends Leaf
 	
 	init()
 	{
+		console.log(this.object.findChildren("Leaf","ball"));
 		console.log("LeafCanvas initialized");
 		console.log("w: " + this.width + " h: " + this.height);
 		var domObj = this.object.findObjByLeafClass("LeafDOM");

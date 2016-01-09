@@ -1,9 +1,25 @@
 export default class Obj {
-	constructor (tree) {
+	constructor (tree,objSrc) {
 		this.tree = tree;
 		this.parrent = null;
 		this.objects = [];
 		this.leafs = [];
+		this.id = objSrc.id || null;
+	}
+	
+	///[Experimental] Searches children
+	findChildren(leafClass, id) {
+		return this.tree.findChildren(leafClass, id, this);
+	}
+
+	///[Experimental] Searches a parrent
+	findParent(leafClass, id, obj) {
+		return this.tree.findParent(leafClass, id, this);
+	}
+	
+	///[Experimental] Seaches an object in a tree
+	findObj(leafClass, id) {
+		return this.tree.findObj(leafClass, id);
 	}
 	
 	///Adds new leaf
@@ -18,12 +34,12 @@ export default class Obj {
 		this.objects.push(obj);
 	}
 	
-	///Returns a liaf of current object by class
+	///Returns a leaf of current object by class
 	getLeafByClass(leafClass) {
 		return this.tree.findLeafInObj(this, leaf => leaf.lclass == leafClass);
 	}
 	
-	///Returns a liaf of current object by id
+	///Returns a leaf of current object by id
 	getLeafById(id) {
 		return this.tree.findLeafInObj(this, leaf => leaf.id == id);
 	}

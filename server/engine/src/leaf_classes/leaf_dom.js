@@ -8,7 +8,6 @@ export default class LeafDOM extends Leaf
 	}
 	
 	init() {
-		console.log(super.constructor.name);
 		if (typeof(document) !== "object")
 			throw new Error("Can't find DOM object");
 		if (typeof(window) !== "object")

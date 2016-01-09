@@ -38,12 +38,35 @@ var objectTreeSource = {
 					}
 				}
 			]
+		},
+		{
+			id: "ball",
+			leafs: [
+				{
+					lclass: "LeafCanvasObject",
+					data: {
+						x: 100,
+						y: 100
+					}
+				},
+				{
+					lclass: "LeafCanvasImage",
+					data: {
+						path: "image.png"
+					}
+				}
+			]
 		}
 	]
 };
 
 export function main() {
-	var classList = {"LeafCanvas":LeafCanvas, "LeafCanvasObject":LeafCanvasObject, "LeafCanvasImage":Leaf, "LeafDOM":LeafDOM}
+	var classList = {
+		"LeafCanvas":LeafCanvas, 
+		"LeafCanvasObject":LeafCanvasObject, 
+		"LeafCanvasImage":Leaf, 
+		"LeafDOM":LeafDOM, 
+		"Leaf":Leaf}
 	var objectTree = engine.loadTree(objectTreeSource, classList);
 	
 }
