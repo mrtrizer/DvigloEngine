@@ -24,8 +24,7 @@ export default class ObjTree {
 				let protoList = this.getInheritChain_(leaf);
 				for (let i = protoList.length - 1; i >= 0; i--)
 					protoList[i].init.call(leaf);
-				//TODO: This condition doesn't work
-				if (typeof(Object.getPrototypeOf(leaf).initOwn) === "function")
+				if (Object.getPrototypeOf(leaf).hasOwnProperty("initOwn"))
 					leaf.initOwn();
 			} catch (e) {
 				console.log("Init error: ", e);
@@ -59,6 +58,7 @@ export default class ObjTree {
 		return object;
 	}
 
+	///Serialize tree to JSON. Returns JSON object.
 	toJSON() {
 		return this.root.toJSON();
 	}
@@ -77,8 +77,7 @@ export default class ObjTree {
 
 	///Returns a leaf of object by class
 	findLeafsInObjByClass(obj, leafClass) {
-		if (typeof(this.classList[leafClass]) !== "function")
-		{
+		if (typeof(this.classList[leafClass]) !== "function") {
 			console.log("WARNING: Leaf class", leafClass, "is not defined");
 			return [];
 		}
@@ -94,9 +93,7 @@ export default class ObjTree {
 		if (typeof(id) !== "string")
 			throw new Error("id has to be a string");
 		if (leafClass != "*")
-		{
 			fit = fit && this.findLeafsInObjByClass(obj, leafClass).length > 0;
-		}
 		if (id != "*")
 			fit = obj.id == id && fit;
 		return fit;

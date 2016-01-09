@@ -19,6 +19,10 @@ export default class LeafDOMObject extends Leaf
 			this.parentElement = undefined;
 	}
 	
+	initOwn() {
+		throw new Error("You can't create leaf of LeafDOMObject class directly. Use LeafDOMElement or extend LeafDOMObject.");
+	}
+	
 	getDocument() {
 		return document;
 	}

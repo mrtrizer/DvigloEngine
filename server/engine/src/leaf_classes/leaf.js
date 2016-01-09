@@ -37,6 +37,7 @@ export default class Leaf {
 	}
 	
 	initOwn() {
+		throw new Error("You can't create leaf of Leaf class directly. Inherit it first.");
 	}
 	
 	procEvent(event) {
