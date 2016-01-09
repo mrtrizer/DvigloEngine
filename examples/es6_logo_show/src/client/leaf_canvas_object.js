@@ -15,7 +15,12 @@ export default class LeafCanvasObject extends Leaf
 		this.isSelected = false;
 	}
 	
-	render(arg) {
+	render(e) {
+		console.log("render canvas object");
+		e.args.cx.lineWidth="6";
+		e.args.cx.strokeStyle="red";
+		e.args.cx.rect(this.x,this.y, 50,50);
+		e.args.cx.stroke(); 
 	}
 	
 	move(arg) {

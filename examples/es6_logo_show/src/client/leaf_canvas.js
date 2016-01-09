@@ -20,8 +20,10 @@ export default class LeafCanvas extends LeafDOMObject
 		this.cx = this.cv.getContext("2d");
 	}
 	
-	render (arg) {
+	render (e) {
 		console.log("render canvas");
+		if (typeof(this.cx) === "object")
+			this.emitChildren("LeafCanvasObject", "*", "render", {cx: this.cx});
 	}
 	
 	mouse_event(arg) {

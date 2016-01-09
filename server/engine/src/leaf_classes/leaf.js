@@ -1,4 +1,4 @@
-import LeafEvent from "../core/event.js"
+import LeafEvent from "../core/leaf_event.js"
 
 export default class Leaf {
 	

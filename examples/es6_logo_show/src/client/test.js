@@ -28,7 +28,7 @@ var objectTreeSource = {
 			leafs: [
 				{
 					lclass: "LeafCanvas",
-					data: {width: 100, height: 100}
+					data: {width: 500, height: 500}
 				}
 			],
 			objects: [
@@ -50,6 +50,8 @@ var objectTreeSource = {
 						{
 							lclass: "LeafCanvasObject",
 							data: {
+								x: 50,
+								y: 50
 							}
 						}
 					]
