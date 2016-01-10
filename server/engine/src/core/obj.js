@@ -65,5 +65,12 @@ export default class Obj {
 	getLeafById(id) {
 		return this.tree.findLeafInObj(this, leaf => leaf.id == id);
 	}
+	
+	parseLeaf(leafSrc) {
+		if (typeof(this.tree.classList[leafSrc.lclass]) !== "function")
+			throw new Error("Invalid leaf class: " + leafSrc.lclass + ".");
+		let leaf = new this.tree.classList[leafSrc.lclass](this,this,leafSrc);
+		this.addLeaf(leaf);
+	}
 }
 

@@ -1,7 +1,7 @@
-import Obj from "./obj.js"
-import LeafEvent from "./leaf_event.js"
-import Leaf from "../leaf_classes/leaf.js"
-import genPropList from "./leaf_prop.js";
+import Obj from "./obj.js";
+import LeafEvent from "./leaf_event.js";
+import Leaf from "../leaf_classes/leaf.js";
+import {SystemTools} from "tools.js";
 
 ///ObjTree implements a tree of game objects, 
 ///has functions for object managment.
@@ -22,12 +22,12 @@ export default class ObjTree {
 		for (let leaf of object.leafs) {
 			try {
 				//call init methods from all parrents
-				for (let proto of this.getInheritChain_(leaf))
+				for (let proto of SystemTools.getInheritChain(leaf))
 					proto.init.call(leaf);
 				if (Object.getPrototypeOf(leaf).hasOwnProperty("initOwn"))
 					leaf.initOwn();
 			} catch (e) {
-				console.log("Init error: ", e);
+				console.log("Leaf initialization error: ", e);
 			}
 		}
 		for (let curObject of object.objects) {
@@ -41,14 +41,9 @@ export default class ObjTree {
 		var object = new Obj(this,src);
 		for (let leafSrc of src.leafs) {
 			try {
-				if (typeof(this.classList[leafSrc.lclass]) !== "function")
-					throw new Error("Invalid leaf class: " + leafSrc.lclass + 
-									". Add a link to the class list.");
-				let leaf = new this.classList[leafSrc.lclass](object,this,leafSrc);
-				genPropList(leaf,leafSrc,this.getInheritChain_(leaf));
-				object.addLeaf(leaf);
+				object.parseLeaf(leafSrc);
 			} catch (e) {
-				console.log("Init error: ", e);
+				console.log("Leaf parsing error: ", e);
 			}
 		}
 		if (typeof(src.objects) === "object") {
@@ -62,18 +57,6 @@ export default class ObjTree {
 	///Serialize tree to JSON. Returns JSON object.
 	toJSON() {
 		return this.root.toJSON();
-	}
-
-	///Returns inherit chain of the object as list of prototypes
-	///E.g.: For LeafDOM will retun [LeafDOM, LeafDOMObject, Leaf]
-	getInheritChain_(obj) {
-		var parrentList = [];
-		var proto = Object.getPrototypeOf(obj);
-		do {
-			parrentList.push(proto);
-			proto = Object.getPrototypeOf(proto);
-		} while (Object.getPrototypeOf(proto) !== null)
-		return parrentList.reverse();
 	}
 
 	///Returns a leaf of object by class

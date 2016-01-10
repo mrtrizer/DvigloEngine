@@ -179,24 +179,10 @@ var propTypes = {
 	sw:LeafPropSwitch
 };
 
-export default function genPropList(leaf,leafSrc, protoList) {
-	leaf.properties = {};
-	var propList = {};
-	for (let proto of protoList)
-		Object.assign(propList, proto.constructor.getPropList());
-	console.log(propList);
-	for (let propName in propList) {
-		let propSrc = propList[propName];
-		let propType = propSrc.type;
-		if (propType === undefined)
-			propType = "any";
-		if (typeof(propTypes[propType]) !== "function")
-			throw new Error("Unknown property type: " + propType);
-		let prop = new propTypes[propType](leaf, propName, propSrc);
-		prop.extract(leafSrc.data);
-		leaf.properties[propName] = prop;
-		Object.defineProperty(leaf, propName, { get: function () { return this.properties[propName].getValue(); }, configurable: true });
-		Object.defineProperty(leaf, propName, { set: function (value) { return this.properties[propName].setValue(value); }, configurable: true  });
-	}
-	return ;
+export default function createProp(propType, propName, propSrc) {
+	if (propType === undefined)
+		propType = "any";
+	if (typeof(propTypes[propType]) !== "function")
+		throw new Error("Unknown property type: " + propType);
+	return new propTypes[propType](this, propName, propSrc);
 }

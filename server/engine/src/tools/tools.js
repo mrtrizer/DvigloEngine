@@ -1,3 +1,17 @@
+export class SystemTools {
+	///Returns inherit chain of the object as list of prototypes
+	///E.g.: For LeafDOM will retun [LeafDOM, LeafDOMObject, Leaf]
+	static getInheritChain(obj) {
+		var parrentList = [];
+		var proto = Object.getPrototypeOf(obj);
+		do {
+			parrentList.push(proto);
+			proto = Object.getPrototypeOf(proto);
+		} while (Object.getPrototypeOf(proto) !== null)
+		return parrentList.reverse();
+	}
+}
+
 //----------------------------------------------------------------------
 //Images loader prototype
 //----------------------------------------------------------------------

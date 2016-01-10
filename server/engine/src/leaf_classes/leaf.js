@@ -1,4 +1,6 @@
-import LeafEvent from "../core/leaf_event.js"
+import LeafEvent from "../core/leaf_event.js";
+import {SystemTools} from "tools.js";
+import createProp from "../core/leaf_prop.js";
 
 export default class Leaf {
 	
@@ -14,7 +16,18 @@ export default class Leaf {
 		this.tree = tree;
 		this.id = leafSrc.id || null;
 		this.lclass = leafSrc.lclass;
-		Object.assign(this, leafSrc.data);
+		let propList = {};
+		for (let proto of SystemTools.getInheritChain(this))
+			Object.assign(propList, proto.constructor.getPropList());
+		this.properties = {};
+		for (let propName in propList) {
+			let propSrc = propList[propName];
+			let prop = createProp(propSrc.type, propName, propSrc);
+			prop.extract(leafSrc.data);
+			this.properties[propName] = prop;
+			Object.defineProperty(this, propName, { get: function () { return this.properties[propName].getValue(); }, configurable: true });
+			Object.defineProperty(this, propName, { set: function (value) { return this.properties[propName].setValue(value); }, configurable: true  });
+		}
 	}
 	
 	init() {
