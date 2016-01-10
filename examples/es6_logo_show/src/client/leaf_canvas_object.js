@@ -21,28 +21,19 @@ export default class LeafCanvasObject extends Leaf
 		args.cx.restore();
 	}
 	
-	move(arg) {
-		this.x = arg.x;
-		this.y = arg.y;
+	move(x,y) {
+		this.x = x;
+		this.y = y;
 	}
 	
-	click(arg) {
-		var size = {w:0,h:0};
-		var leafs = getLeafs("*");
-		for (let leaf of leafs) {
-			if (typeof(leaf.isSelecteble) === "function")
-				if (leaf.isSelecteble({x:arg.x - this.x,y:arg.y - this.y}))
-				{
-					isSelected = true;
-					break;
-				}
+	get rect() {
+		var graphics = this.object.getLeafsByClass("LeafCanvasGraphics");
+		if (graphics.length < 0)
+			return {x:this.x, y:this.y, width:0, height:0}; 
+		else {
+			let rect = graphics[0].rect;
+			return {x:this.x + rect.x, y:this.y + rect.y, width: rect.width, height: rect.height};
 		}
 	}
 	
-	rectSelect(arg) {
-		if (isInRect({x:x,y:y},arg.rect))
-			isSelected = true;
-		else
-			isSelected = false;
-	}
 }

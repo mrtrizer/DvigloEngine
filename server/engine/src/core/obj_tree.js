@@ -19,7 +19,7 @@ export default class ObjTree {
 	///E.g.: For LeafDOM leaf class it will call init() this order:
 	///Leaf -> LeafDOMObject -> LeafDOM
 	initObject(object) {
-		for (let leaf of object.leafs) {
+		for (let leaf of object.leafs_) {
 			try {
 				//call init methods from all parrents
 				for (let proto of SystemTools.getInheritChain(leaf))
@@ -30,7 +30,7 @@ export default class ObjTree {
 				console.log("Leaf initialization error: ", e);
 			}
 		}
-		for (let curObject of object.objects) {
+		for (let curObject of object.objects_) {
 			this.initObject(curObject)
 		}
 	}
@@ -73,16 +73,18 @@ export default class ObjTree {
 	findParent(obj, leafClass, id) {
 		if (typeof(obj) !== "object")
 			throw Error("Invalid object link");
-		var curObj = obj.parent;
+		var curObj = obj.parent_;
 		while (typeof(curObj) === "object") {
 			if (this.isFitToCondition_(curObj, leafClass, id))
 				return curObj;
-			curObj = obj.parent;
+			curObj = obj.parent_;
 		}
 		return null;
 	}
 
 	///Emits an event to all listeners
+	///@param listeners leafs that get event
+	///@param event LeafEvent instance
 	emit(listeners,event) {
 		if (!Array.isArray(listeners))
 			throw new Error("Param listeners has to be an array of object.");
@@ -99,7 +101,7 @@ export default class ObjTree {
 	///Searches leaf in object using func for checking
 	findLeafsInObj(object,func) {
 		var list = [];
-		for (let leaf of object.leafs)
+		for (let leaf of object.leafs_)
 			if (func(leaf))
 				list.push(leaf);
 		return list;
@@ -110,8 +112,8 @@ export default class ObjTree {
 		for (let object of objects) {
 			if (func(object))
 				list.push(object);
-			if (typeof(object.objects) === "object") {
-				var result = this.findObjBy_(object.objects, func);
+			if (typeof(object.objects_) === "object") {
+				var result = this.findObjBy_(object.objects_, func);
 				if (result != null)
 					list = list.concat(result);
 			}

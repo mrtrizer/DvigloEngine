@@ -20,4 +20,8 @@ export default class LeafCanvasGraphics extends Leaf {
 			object.getLeafByClass("LeafCanvasObject").selected = true;
 		}
 	}
+	
+	get rect() {
+		return {x:-5, y:-5, width:10, height: 10};
+	}
 }

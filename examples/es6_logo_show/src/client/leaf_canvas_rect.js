@@ -14,5 +14,8 @@ export default class LeafCanvasRect extends LeafCanvasFigure {
 	drawFigure(cx) {
 		cx.rect(this.x,this.y,this.width,this.height);
 	}
-
+	
+	get rect() {
+		return {x:this.x, y:this.y, width:this.width, height: this.height};
+	}
 }

@@ -35,6 +35,7 @@ export default class Leaf {
 		console.log("Leaf initialized. Class:", this.lclass);
 	}
 	
+	///Serializes leaf
 	toJSON() {
 		var jsonData = {
 			lclass: this.lclass,
@@ -54,24 +55,18 @@ export default class Leaf {
 		throw new Error("You can't create leaf of Leaf class directly. Inherit it first.");
 	}
 	
+	///Calls corresponding to event method
 	procEvent(event) {
 		if (typeof(this[event.method]) === "function")
 			this[event.method](event,event.args);
 	}
 	
-	findNeighbor(leafClass, id = "*") {
-		var leafList = this.object.getLeafsByClass(leafClass);
-		if (id != "*") {
-			var result = [];
-			for (let leaf in leafList)
-				if (leaf.id == id)
-					result.push(leaf);
-		} else {
-			var result = leafList;
-		}
-		return result;
+	///Searches a list of neighbour by class
+	findNeighbors(leafClass) {
+		return this.object.getLeafsByClass(leafClass);
 	}
 	
+	///Searches leafs from children by leaf class and object id
 	findChildrenLieafs(leafClass, id) {
 		var objectList = this.object.findChildren(leafClass, id);
 		var leafList = [];
@@ -80,6 +75,22 @@ export default class Leaf {
 		return leafList;
 	}
 	
+	///[Experimental]
+	neighbor(leafClass = "*") {
+		var neighbors = this.neighbors(leafClass);
+		return neighbors.length > 0? neighbors[0]: undefined;
+	}
+	
+	///[Experimental]
+	neighbors(leafClass = "*") {
+		return this.findNeighbors(leafClass);
+	}
+	
+	///Simplified event sending to children
+	///@param leafClass class of listener liafs
+	///@param id id of listener object
+	///@param method event name (liaf's method)
+	///@param args event arguments
 	emitChildren(leafClass, id, method, args = {}) {
 		this.object.emit(this.findChildrenLieafs(leafClass, id), new LeafEvent(method, args));
 	}

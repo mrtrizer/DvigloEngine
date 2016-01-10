@@ -14,19 +14,16 @@ import {MathTools} from "tools.js";
 class LeafPlayerCtrl extends LeafInputCtrl {
 	input (e,args) {
 		if (args.type === "onclick")
-			this.findNeighbor("LeafCanvasRect")[0].fill_style = "black";
-		if (args.type === "onmousemove")
-		{
-			this.findNeighbor("LeafCanvasObject")[0].x = args.e.clientX;
-			this.findNeighbor("LeafCanvasObject")[0].y = args.e.clientY;
-			let rects = this.object.findParent("LeafCanvas").findChildren("LeafCanvasRect");
-			for (let rect of rects)
-			{
-				let rectLeaf = rect.getLeafsByClass("LeafCanvasRect")[0];
-				let canvasObjLeaf = rect.getLeafsByClass("LeafCanvasObject")[0];
-				if (MathTools.isInRect({x:args.e.clientX, y:args.e.clientY},
-						{x:canvasObjLeaf.x, y:canvasObjLeaf.y, width:rectLeaf.width, height:rectLeaf.height}))
-					this.findNeighbor("LeafCanvasRect")[0].fill_style = rectLeaf.fill_style;
+			this.neighbor("CanvasRect").fill_style = "black";
+		if (args.type === "onmousemove") {
+			this.neighbor("CanvasObject").x = args.e.clientX;
+			this.neighbor("CanvasObject").y = args.e.clientY;
+			let rects = this.object.parent("Canvas").children("CanvasRect");
+			for (let rect of rects) {
+				let rectLeaf = rect.leaf("CanvasRect");
+				let canvasObjLeaf = rect.leaf("CanvasObject");
+				if (MathTools.isInRect({x:args.e.clientX, y:args.e.clientY},canvasObjLeaf.rect))
+					this.neighbor("CanvasRect").fill_style = rectLeaf.fill_style;
 			}
 		}
 	}
@@ -76,7 +73,19 @@ export function main() {
 		"LeafDOMElement":LeafDOMElement, 
 		"LeafPlayerCtrl":LeafPlayerCtrl,
 		"LeafInputCtrl":LeafInputCtrl,
-		"Leaf":Leaf}
+		"Leaf":Leaf,
+		"Canvas":LeafCanvas, 
+		"CanvasGraphics":LeafCanvasGraphics, 
+		"CanvasFigure":LeafCanvasFigure, 
+		"CanvasRect":LeafCanvasRect, 
+		"CanvasObject":LeafCanvasObject, 
+		"CanvasImage":Leaf, 
+		"DOM":LeafDOM, 
+		"DOMObject":LeafDOMObject, 
+		"DOMElement":LeafDOMElement, 
+		"PlayerCtrl":LeafPlayerCtrl,
+		"InputCtrl":LeafInputCtrl
+		}
 	var objectTree = loadTree(objectTreeSource, classList);
 	console.log(objectTree.toJSON()); 
 }

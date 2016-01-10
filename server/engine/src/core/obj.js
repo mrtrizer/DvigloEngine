@@ -1,8 +1,8 @@
 export default class Obj {
 	constructor (tree,objSrc,parent) {
 		this.tree = tree;
-		this.parent = parent;
-		this.objects = [];
+		this.parent_ = parent;
+		this.objects_ = [];
 		this.parseObject(objSrc);
 	}
 	
@@ -15,13 +15,39 @@ export default class Obj {
 		if (typeof(this.id) === "string")
 			jsonData.id = this.id;
 			
-		for (let leaf of this.leafs)
+		for (let leaf of this.leafs_)
 			jsonData.leafs.push(leaf.toJSON());
 		
-		for (let object of this.objects)
+		for (let object of this.objects_)
 			jsonData.objects.push(object.toJSON());
 		
 		return jsonData;
+	}
+	
+	///[Experimental] Searches objects among all children
+	children(leafClass = "*", id = "*") {
+		return this.findChildren(leafClass,id);
+	}
+	
+	///[Experimental] Returns parent
+	parent(leafClass = "*", id = "*") {
+		return this.findParent(leafClass,id);
+	}
+	
+	///[Experimental] Returns direct children of the object 
+	objects(leafClass = "*", id = "*") {
+		throw new Error("Not implementd");
+	}
+	
+	///[Experimental] Returns first appropriate leaf
+	leaf(leafClass = "*") {
+		var leafs = this.leafs(leafClass);
+		return leafs.length > 0? leafs[0] : undefined;
+	}
+	
+	///[Experimental] Returns liafs from object
+	leafs(leafClass = "*") {
+		return this.tree.findLeafsInObjByClass(this, leafClass);
 	}
 	
 	///Searches children
@@ -30,7 +56,7 @@ export default class Obj {
 	}
 
 	///Searches a parrent
-	findParent(leafClass, id, obj) {
+	findParent(leafClass, id) {
 		return this.tree.findParent(this, leafClass, id);
 	}
 	
@@ -39,20 +65,22 @@ export default class Obj {
 		return this.tree.findChildren(this.tree.root, leafClass, id);
 	}
 	
+	///Send event to all listeners
+	///@see ObjTree.emit()
 	emit(listeners,event) {
 		return this.tree.emit(listeners,event);
 	}
 	
-	///Adds new leaf
+	///Adds new leaf to the object
 	addLeaf(leaf) {
 		leaf.object = this;
-		this.leafs.push(leaf);
+		this.leafs_.push(leaf);
 	}
 	
 	///Adds an object as child
 	addChild(obj) {
-		obj.parent = this;
-		this.objects.push(obj);
+		obj.parent_ = this;
+		this.objects_.push(obj);
 	}
 	
 	///Returns a leaf of current object by class
@@ -68,7 +96,7 @@ export default class Obj {
 	///Method creates Obj elements and adds leafs
 	///@param src JSON source of object tree
 	parseObject(src) {
-		this.leafs = [];
+		this.leafs_ = [];
 		this.id = src.id || null;
 		for (let leafSrc of src.leafs) {
 			try {
