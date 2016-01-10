@@ -7,6 +7,7 @@ import LeafCanvasGraphics from "./leaf_canvas_graphics.js";
 import LeafCanvasFigure from "./leaf_canvas_figure.js";
 import LeafCanvasRect from "./leaf_canvas_rect.js";
 import LeafDOMElement from "leaf_dom_element.js";
+import {loadTree} from "engine.js";
 
 var objectTreeSource = { 
 	id: "root",leafs: [{lclass: "LeafDOM", data: {update_period:2000}}],
@@ -18,21 +19,21 @@ var objectTreeSource = {
 			]}
 		]},
 		{id: "canvas",
-		leafs: [
-				{lclass: "LeafCanvas", data: {width: 500, height: 500}}
+		leafs: [{lclass: "LeafCanvas", data: {width: 500, height: 500}}
 			],
-			objects: [
-				{id: "player",
-				leafs: [{lclass: "LeafCanvasObject", data: {x: 110,y: 110}},
-						{lclass: "LeafCanvasRect",data: {x: 0,y: 0,	width: 50,height: 50,fill_style: "blue"	}}
-						]},
-				{id: "ball",
-				leafs: [{lclass: "LeafCanvasObject", data: {x: 110,y: 110}}},
-						{lclass: "LeafCanvasRect",data: {x: 0,y: 0,	width: 50,height: 50,fill_style: "blue"	}}
-						]}
-	]
-};
-
+		objects: [
+			{id: "player",
+			leafs: [{lclass: "LeafCanvasObject", data: {x: 110,y: 110}},
+					{lclass: "LeafCanvasRect",data: {x: 0,y: 0,	width: 50,height: 50,fill_style: "blue"	}}
+					]},
+			{id: "ball",
+			leafs: [{lclass: "LeafCanvasObject", data: {x: 40,y: 70}},
+					{lclass: "LeafCanvasRect",data: {x: 0,y: 0,	width: 50,height: 70,fill_style: "green"}}
+					]}
+			]}
+		]
+	};
+	
 export function main() {
 	var classList = {
 		"LeafCanvas":LeafCanvas, 
@@ -45,6 +46,6 @@ export function main() {
 		"LeafDOMObject":LeafDOMObject, 
 		"LeafDOMElement":LeafDOMElement, 
 		"Leaf":Leaf}
-	var objectTree = engine.loadTree(objectTreeSource, classList);
+	var objectTree = loadTree(objectTreeSource, classList);
 	console.log(objectTree.toJSON()); 
 }

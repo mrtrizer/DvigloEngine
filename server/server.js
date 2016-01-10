@@ -217,8 +217,7 @@ function updateHandlers() {
     } catch (error) {
         console.log(error);
     }
-    handlers["index.html"] = "./engine/bin/index.html";
-    handlers["engine.js"] = "./engine/bin/app.js"
+    handlers["index.html"] = "./engine/frontend/index.html";
     handlers["app.js"] = path.resolve(clientPath, ".bin/client/app.js");
     handlers["app.js.map"] = path.resolve(clientPath, ".bin/client/app.js.map");
     handlers["res/*"] = path.resolve(clientPath, ".bin/res/");
@@ -353,7 +352,7 @@ function initGulp(projectPath, params) {
                 paths: [
                     path.resolve(config.engine_path, "src/leaf_classes"),
                     path.resolve(config.engine_path, "src/tools"),
-                    path.resolve(config.engine_path, "src/core")
+                    path.resolve(config.engine_path, "src/core"),
                 ]
             })
             .require(source, {
