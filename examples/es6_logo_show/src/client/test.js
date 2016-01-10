@@ -9,91 +9,27 @@ import LeafCanvasRect from "./leaf_canvas_rect.js";
 import LeafDOMElement from "leaf_dom_element.js";
 
 var objectTreeSource = { 
-	id: "root",
-	leafs: [
-		{
-			lclass: "LeafDOM",
-			data: {
-				update_period:2000}
-		}
-	],
+	id: "root",leafs: [{lclass: "LeafDOM", data: {update_period:2000}}],
 	objects: [
-		{
-			leafs: [
-				{
-					lclass: "LeafDOMElement",
-					data: {
-						type:"div",
-						style:"width:100px; height:100px; background-color:#666; left: 300px; top: 0px; position:absolute"}
-				}
+		{leafs: [{lclass: "LeafDOMElement", data: {type:"div",style:"width:100px; height:100px; background-color:#666; left: 300px; top: 0px; position:absolute"}}
+			],
+		objects: [
+			{leafs: [{lclass: "LeafDOMElement",data: {type:"div", style:"width:50px; height:50px; background-color:#222; left: 0px; position:absolute"}}
+			]}
+		]},
+		{id: "canvas",
+		leafs: [
+				{lclass: "LeafCanvas", data: {width: 500, height: 500}}
 			],
 			objects: [
-					{
-						leafs: [
-							{
-								lclass: "LeafDOMElement",
-								data: {type:"div", 
-									style:"width:50px; height:50px; background-color:#222; left: 0px; position:absolute"}
-							}
-						]
-					}
-			]
-		},
-		{ 
-			id: "canvas",
-			leafs: [
-				{
-					lclass: "LeafCanvas",
-					data: {width: 500, height: 500}
-				}
-			],
-			objects: [
-				{
-					id: "player",
-					leafs: [
-						{
-							lclass: "LeafCanvasObject",
-							data: {
-								x: 110,
-								y: 110
-							}
-						},
-						{
-							lclass: "LeafCanvasRect",
-							data: {
-								x: 0,
-								y: 0,
-								width: 50,
-								height: 50,
-								fill_style: "blue"
-							}
-						}
-					]
-				},
-				{
-					id: "ball",
-					leafs: [
-						{
-							lclass: "LeafCanvasObject",
-							data: {
-								x: 50,
-								y: 50
-							}
-						},
-						{
-							lclass: "LeafCanvasRect",
-							data: {
-								x: 0,
-								y: 0,
-								width: 70,
-								height: 50,
-								fill_style: "green"
-							}
-						}
-					]
-				}
-			]
-		}
+				{id: "player",
+				leafs: [{lclass: "LeafCanvasObject", data: {x: 110,y: 110}},
+						{lclass: "LeafCanvasRect",data: {x: 0,y: 0,	width: 50,height: 50,fill_style: "blue"	}}
+						]},
+				{id: "ball",
+				leafs: [{lclass: "LeafCanvasObject", data: {x: 110,y: 110}}},
+						{lclass: "LeafCanvasRect",data: {x: 0,y: 0,	width: 50,height: 50,fill_style: "blue"	}}
+						]}
 	]
 };
 
