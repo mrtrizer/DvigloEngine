@@ -1,3 +1,10 @@
+///@addtogroup Core
+
+///@addtogroup Tools
+///Tools are used everywhere. Some code written in old style and most of it 
+///I wrote when was a beginner. It has to be refactored and rewritten at some parts.
+///@{
+
 export class SystemTools {
 	///Returns inherit chain of the object as list of prototypes
 	///E.g.: For LeafDOM will retun [LeafDOM, LeafDOMObject, Leaf]
@@ -407,3 +414,5 @@ MathTools.MD5 =  function (string) {
     return temp.toLowerCase();
 }
 
+///@} Tools
+///@} Core

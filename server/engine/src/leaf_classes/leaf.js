@@ -1,6 +1,6 @@
-import LeafEvent from "../core/leaf_event.js";
+import LeafEvent from "leaf_event.js";
 import {SystemTools} from "tools.js";
-import createProp from "../core/leaf_prop.js";
+import createProp from "leaf_prop.js";
 
 export default class Leaf {
 	
@@ -37,17 +37,13 @@ export default class Leaf {
 	
 	///Serializes leaf
 	toJSON() {
-		var jsonData = {
-			lclass: this.lclass,
-			data: {}
-		};
+		var jsonData = {lclass: this.lclass, data: {}};
 		var propList = this.constructor.getPropList();
 		for (let propName in propList)
 			if (this[propName] != undefined)
 				jsonData.data[propName] = this[propName];
 			else
 				jsonData.data[propName] = propList[propName].def || 0;
-				
 		return jsonData;
 	}
 	

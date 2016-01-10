@@ -10,6 +10,7 @@ export default class LeafDOMElement extends LeafDOMObject
 		}
 	}
 	
+	///Creates an element and places it to a DOM
 	init() {
 		if (typeof(this.type) !== "string")
 			throw new Error("Invalid element type");
@@ -18,10 +19,12 @@ export default class LeafDOMElement extends LeafDOMObject
 		this.parentElement.getElement().appendChild(this.element);
 	}
 	
+	///Returns DOM element
 	getElement() {
 		return this.element;
 	}
 	
+	///Used to update DOM element
 	render () {
 	}
 

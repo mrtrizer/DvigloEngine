@@ -1,4 +1,8 @@
+///@addtogroup Core
+///@{
+
 export default class Obj {
+	
 	constructor (tree,objSrc,parent) {
 		this.tree = tree;
 		this.parent_ = parent;
@@ -6,21 +10,15 @@ export default class Obj {
 		this.parseObject(objSrc);
 	}
 	
+	///Serialize object
 	toJSON() {
-		var jsonData = {
-			leafs:[],
-			objects:[]
-		};
-		
+		var jsonData = { leafs:[], objects:[]};
 		if (typeof(this.id) === "string")
 			jsonData.id = this.id;
-			
 		for (let leaf of this.leafs_)
 			jsonData.leafs.push(leaf.toJSON());
-		
 		for (let object of this.objects_)
 			jsonData.objects.push(object.toJSON());
-		
 		return jsonData;
 	}
 	
@@ -113,3 +111,4 @@ export default class Obj {
 	}
 }
 
+///@} Core

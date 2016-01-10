@@ -3,6 +3,9 @@ import LeafEvent from "./leaf_event.js";
 import Leaf from "../leaf_classes/leaf.js";
 import {SystemTools} from "tools.js";
 
+///@addtogroup Core
+///@{
+
 ///ObjTree implements a tree of game objects, 
 ///has functions for object managment.
 export default class ObjTree {
@@ -121,3 +124,5 @@ export default class ObjTree {
 		return list;
 	}
 }
+
+///@} Core

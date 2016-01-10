@@ -1,5 +1,6 @@
 import Leaf from "leaf.js";
 
+///Root object in a DOM tree
 export default class LeafDOMObject extends Leaf
 {
 	static getPropList() {
@@ -7,6 +8,7 @@ export default class LeafDOMObject extends Leaf
 		}
 	}
 	
+	///Checks is no any other LeafDOMObject in current object and searches parrent
 	init() {
 		if (this.object.getLeafsByClass("LeafDOMObject").length > 1)
 			throw new Error("You can add only one LeafDOMObject in object.");

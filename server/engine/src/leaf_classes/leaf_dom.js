@@ -7,6 +7,7 @@ export default class LeafDOM extends LeafDOMObject
 		}
 	}
 	
+	///Checks if document and window object exist
 	init() {
 		if (typeof(document) !== "object")
 			throw new Error("Can't find DOM object");
@@ -23,15 +24,7 @@ export default class LeafDOM extends LeafDOMObject
 		setTimeout(()=>this.onNewFrame(), this.update_period || 1000);
 	}
 	
-	getDocument() {
-		return this.document;
-	}
-	
 	getElement() {
 		return this.document.body;
 	}
-	
-	render() {
-	}
-
 }

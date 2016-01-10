@@ -1,15 +1,18 @@
-import LeafCanvas from "./leaf_canvas.js";
-import LeafCanvasObject from "./leaf_canvas_object.js";
+import LeafCanvas from "leaf_canvas.js";
+import LeafCanvasObject from "leaf_canvas_object.js";
 import Leaf from "leaf.js"
 import LeafDOM from "leaf_dom.js"
 import LeafDOMObject from "leaf_dom_object.js"
-import LeafCanvasGraphics from "./leaf_canvas_graphics.js";
-import LeafCanvasFigure from "./leaf_canvas_figure.js";
-import LeafCanvasRect from "./leaf_canvas_rect.js";
+import LeafCanvasGraphics from "leaf_canvas_graphics.js";
+import LeafCanvasFigure from "leaf_canvas_figure.js";
+import LeafCanvasRect from "leaf_canvas_rect.js";
 import LeafDOMElement from "leaf_dom_element.js";
 import LeafInputCtrl from "leaf_input_ctrl.js";
 import {loadTree} from "engine.js";
 import {MathTools} from "tools.js";
+
+///@addtogroup TreeInit
+///@{
 
 class LeafPlayerCtrl extends LeafInputCtrl {
 	input (e,args) {
@@ -89,3 +92,5 @@ export function main() {
 	var objectTree = loadTree(objectTreeSource, classList);
 	console.log(objectTree.toJSON()); 
 }
+
+///@} TreeInit

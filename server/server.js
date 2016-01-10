@@ -34,6 +34,11 @@ else {
     process.exit(2);
 }
 
+///@addtogroup ServerCli
+///Server is written on nodejs without es6. 
+///It contains autobuild module and builds current project written with es6.
+///@{
+
 ///Implements start operation
 function start() {
     if (process.argv.length < 4) {
@@ -232,7 +237,7 @@ function startServer() {
     startHTTP(route, config);
 }
 
-///@addtogroup app_auto_build
+///@addtogroup ProjectAutoBuild
 ///@{
 
 ///Invokes full rebuild and than starts a servers
@@ -351,7 +356,6 @@ function initGulp(projectPath, params) {
                 plugin: (plugin || []),
                 paths: [
                     path.resolve(config.engine_path, "src/leaf_classes"),
-                    path.resolve(config.engine_path, "src/tools"),
                     path.resolve(config.engine_path, "src/core"),
                 ]
             })
@@ -367,3 +371,4 @@ function initGulp(projectPath, params) {
 ///@}
 
 buildAll(startServer);
+///@}

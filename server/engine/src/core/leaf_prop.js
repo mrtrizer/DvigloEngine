@@ -1,5 +1,11 @@
 import Leaf from "leaf.js";
 
+///@addtogroup Core
+///@{
+
+///@addtogroup LeafProperties
+///@{
+
 class LeafPropAny {
 	
 	constructor(leaf, name, params) {
@@ -186,3 +192,6 @@ export default function createProp(propType, propName, propSrc) {
 		throw new Error("Unknown property type: " + propType);
 	return new propTypes[propType](this, propName, propSrc);
 }
+
+///@} LeafProperties
+///@} Core

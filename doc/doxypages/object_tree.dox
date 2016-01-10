@@ -1,0 +1,38 @@
+/*!
+@page TreeStructure
+# Tree object structure
+Every object contains leafs, which add different kinds of behavior to objects.<br>
+All leafs extend Leaf class.<br>
+For example, tree with 2dcanvas, image, rectangle and physic:<br>
+@dot
+digraph Experiment {
+		size ="5";
+		rankdir=LR;
+		object1 [shape = box, label = "Obj"]; 
+		leaf1 [shape = ellipse, label = "LeafCanvas"]; 
+		leaf2 [shape = ellipse, label = "LeafInputMgr"]; 
+		object2 [shape = box, label = "Obj"]; 
+		leaf11 [shape = ellipse, label = "LeafCanvasObject"]; 
+		leaf12 [shape = ellipse, label = "LeafCanvasImage"]; 
+		leaf13 [shape = ellipse, label = "LeafBox2DObject"]; 
+		leaf14 [shape = ellipse, label = "LeafBox2DFixture"]; 
+		object3 [shape = box, label = "Obj"]; 
+		leaf21 [shape = ellipse, label = "LeafCanvasObject"]; 
+		leaf22 [shape = ellipse, label = "LeafCanvasBox"]; 
+		leaf23 [shape = ellipse, label = "LeafBox2DObject"]; 
+		leaf24 [shape = ellipse, label = "LeafBox2DFixture"]; 
+		object1->leaf1;
+		object1->leaf2;
+		object1->object2;
+		object1->object3;
+		object2->leaf11;
+		object2->leaf12;
+		object2->leaf13;
+		object2->leaf14;
+		object3->leaf21;
+		object3->leaf22;
+		object3->leaf23;
+		object3->leaf24;
+}
+@enddot
+*/
