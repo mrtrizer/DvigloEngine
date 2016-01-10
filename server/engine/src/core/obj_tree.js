@@ -9,7 +9,7 @@ export default class ObjTree {
 	
 	constructor(objTreeSrc, classList) {
 		this.classList = classList;
-		this.root = this.parseObject(objTreeSrc);
+		this.root = new Obj(this,objTreeSrc,undefined);
 		this.initObject(this.root);
 	}
 	
@@ -33,25 +33,6 @@ export default class ObjTree {
 		for (let curObject of object.objects) {
 			this.initObject(curObject)
 		}
-	}
-	
-	///Method creates Obj elements and add leafs there
-	///@param src JSON source of object tree
-	parseObject(src) {
-		var object = new Obj(this,src);
-		for (let leafSrc of src.leafs) {
-			try {
-				object.parseLeaf(leafSrc);
-			} catch (e) {
-				console.log("Leaf parsing error: ", e);
-			}
-		}
-		if (typeof(src.objects) === "object") {
-			for (let curObjectSrc of src.objects) {
-				object.addChild(this.parseObject(curObjectSrc, object));
-			}
-		}
-		return object;
 	}
 
 	///Serialize tree to JSON. Returns JSON object.

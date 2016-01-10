@@ -1,10 +1,9 @@
 export default class Obj {
-	constructor (tree,objSrc) {
+	constructor (tree,objSrc,parent) {
 		this.tree = tree;
-		this.parent = undefined;
+		this.parent = parent;
 		this.objects = [];
-		this.leafs = [];
-		this.id = objSrc.id || null;
+		this.parseObject(objSrc);
 	}
 	
 	toJSON() {
@@ -66,11 +65,24 @@ export default class Obj {
 		return this.tree.findLeafInObj(this, leaf => leaf.id == id);
 	}
 	
-	parseLeaf(leafSrc) {
-		if (typeof(this.tree.classList[leafSrc.lclass]) !== "function")
-			throw new Error("Invalid leaf class: " + leafSrc.lclass + ".");
-		let leaf = new this.tree.classList[leafSrc.lclass](this,this,leafSrc);
-		this.addLeaf(leaf);
+	///Method creates Obj elements and adds leafs
+	///@param src JSON source of object tree
+	parseObject(src) {
+		this.leafs = [];
+		this.id = src.id || null;
+		for (let leafSrc of src.leafs) {
+			try {
+				if (typeof(this.tree.classList[leafSrc.lclass]) !== "function")
+					throw new Error("Invalid leaf class: " + leafSrc.lclass + ".");
+				let leaf = new this.tree.classList[leafSrc.lclass](this,this,leafSrc);
+				this.addLeaf(leaf);
+			} catch (e) {
+				console.log("Leaf parsing error: ", e);
+			}
+		}
+		if (typeof(src.objects) === "object")
+			for (let curObjectSrc of src.objects)
+				this.addChild(new Obj(this.tree, curObjectSrc, this));
 	}
 }
 

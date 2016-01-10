@@ -27,6 +27,8 @@ var objectTreeSource = {
 					{lclass: "LeafCanvasRect",data: {x: 0,y: 0,	width: 50,height: 50,fill_style: "blue"	}}
 					]},
 			{id: "ball",
+			leafs_dev: [{lclass: "LeafCanvasRect",data: {x: 10,y: 10,width: 30,height: 50,fill_style: "red"}}
+					],
 			leafs: [{lclass: "LeafCanvasObject", data: {x: 40,y: 70}},
 					{lclass: "LeafCanvasRect",data: {x: 0,y: 0,	width: 50,height: 70,fill_style: "green"}}
 					]}
