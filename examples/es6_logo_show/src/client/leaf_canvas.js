@@ -31,6 +31,7 @@ export default class LeafCanvas extends LeafDOMObject
 	
 	///Render event listener
 	render (e) {
+
 	}
 	
 	mouse_event(arg) {

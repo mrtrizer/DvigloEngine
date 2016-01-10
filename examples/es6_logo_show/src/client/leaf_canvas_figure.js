@@ -4,8 +4,8 @@ export default class LeafCanvasFigure extends LeafCanvasGraphics {
 	static getPropList() {
 		return {
 			line_width: {type:"uint", def:1},
-			line_style: {type:"string", def:"black"},
-			fill_style: {type:"string", def:"black"}
+			line_style: {type:"str", def:"black"},
+			fill_style: {type:"str", def:"black"}
 		}
 	}
 	

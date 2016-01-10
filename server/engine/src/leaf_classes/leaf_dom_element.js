@@ -4,9 +4,9 @@ export default class LeafDOMElement extends LeafDOMObject
 {
 	static getPropList() {
 		return {
-			style : {type: "string", def: ""},
-			type : {type: "variant", list:["div", "button"], def: "div"},
-			params : {type: "JSON", def: {}}
+			style : {type: "str", def: ""},
+			type : {type: "sw", list:["div", "button"], def: "div"},
+			params : {type: "json", def: {}}
 		}
 	}
 	

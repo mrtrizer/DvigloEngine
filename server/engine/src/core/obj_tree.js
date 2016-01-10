@@ -1,6 +1,7 @@
 import Obj from "./obj.js"
 import LeafEvent from "./leaf_event.js"
 import Leaf from "../leaf_classes/leaf.js"
+import genPropList from "./leaf_prop.js";
 
 ///ObjTree implements a tree of game objects, 
 ///has functions for object managment.
@@ -21,9 +22,8 @@ export default class ObjTree {
 		for (let leaf of object.leafs) {
 			try {
 				//call init methods from all parrents
-				let protoList = this.getInheritChain_(leaf);
-				for (let i = protoList.length - 1; i >= 0; i--)
-					protoList[i].init.call(leaf);
+				for (let proto of this.getInheritChain_(leaf))
+					proto.init.call(leaf);
 				if (Object.getPrototypeOf(leaf).hasOwnProperty("initOwn"))
 					leaf.initOwn();
 			} catch (e) {
@@ -45,6 +45,7 @@ export default class ObjTree {
 					throw new Error("Invalid leaf class: " + leafSrc.lclass + 
 									". Add a link to the class list.");
 				let leaf = new this.classList[leafSrc.lclass](object,this,leafSrc);
+				genPropList(leaf,leafSrc,this.getInheritChain_(leaf));
 				object.addLeaf(leaf);
 			} catch (e) {
 				console.log("Init error: ", e);
@@ -72,7 +73,7 @@ export default class ObjTree {
 			parrentList.push(proto);
 			proto = Object.getPrototypeOf(proto);
 		} while (Object.getPrototypeOf(proto) !== null)
-		return parrentList
+		return parrentList.reverse();
 	}
 
 	///Returns a leaf of object by class

@@ -4,8 +4,8 @@ export default class LeafCanvasObject extends Leaf
 {
 	static getPropList() {
 		return {
-			x: {type:"double", min: -10000, max: 10000, def: 0},
-			y: {type:"double", min: -10000, max: 10000, def: 0}
+			x: {type:"float", min: -10000, max: 10000, def: 0},
+			y: {type:"float", min: -10000, max: 10000, def: 0}
 		}
 	}
 	

@@ -352,7 +352,8 @@ function initGulp(projectPath, params) {
                 plugin: (plugin || []),
                 paths: [
                     path.resolve(config.engine_path, "src/leaf_classes"),
-                    path.resolve(config.engine_path, "src/tools")
+                    path.resolve(config.engine_path, "src/tools"),
+                    path.resolve(config.engine_path, "src/core")
                 ]
             })
             .require(source, {
