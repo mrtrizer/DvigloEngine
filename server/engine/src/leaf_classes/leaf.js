@@ -56,7 +56,7 @@ export default class Leaf {
 	
 	procEvent(event) {
 		if (typeof(this[event.method]) === "function")
-			this[event.method](event);
+			this[event.method](event,event.args);
 	}
 	
 	findNeighbor(leafClass, id = "*") {

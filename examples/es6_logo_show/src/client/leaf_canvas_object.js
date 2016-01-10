@@ -13,12 +13,12 @@ export default class LeafCanvasObject extends Leaf
 		this.isSelected = false;
 	}
 	
-	render(e) {
-		e.args.cx.save();
-		e.args.cx.translate(this.x, this.y);
+	render(e,args) {
+		args.cx.save();
+		args.cx.translate(this.x, this.y);
 		for (let leaf of this.object.getLeafsByClass("LeafCanvasGraphics"))
-			leaf.render(e.args.cx);
-		e.args.cx.restore();
+			leaf.render(args.cx);
+		args.cx.restore();
 	}
 	
 	move(arg) {
