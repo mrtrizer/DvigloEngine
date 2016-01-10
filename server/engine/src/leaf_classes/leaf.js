@@ -16,6 +16,7 @@ export default class Leaf {
 		this.tree = tree;
 		this.id = leafSrc.id || null;
 		this.lclass = leafSrc.lclass;
+		this.mode = leafSrc.mode || "*";
 		let propList = {};
 		for (let proto of SystemTools.getInheritChain(this))
 			Object.assign(propList, proto.constructor.getPropList());
@@ -56,6 +57,19 @@ export default class Leaf {
 	procEvent(event) {
 		if (typeof(this[event.method]) === "function")
 			this[event.method](event);
+	}
+	
+	findNeighbor(leafClass, id = "*") {
+		var leafList = this.object.getLeafsByClass(leafClass);
+		if (id != "*") {
+			var result = [];
+			for (let leaf in leafList)
+				if (leaf.id == id)
+					result.push(leaf);
+		} else {
+			var result = leafList;
+		}
+		return result;
 	}
 	
 	findChildrenLieafs(leafClass, id) {

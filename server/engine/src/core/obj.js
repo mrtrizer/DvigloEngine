@@ -74,8 +74,7 @@ export default class Obj {
 			try {
 				if (typeof(this.tree.classList[leafSrc.lclass]) !== "function")
 					throw new Error("Invalid leaf class: " + leafSrc.lclass + ".");
-				let leaf = new this.tree.classList[leafSrc.lclass](this,this,leafSrc);
-				this.addLeaf(leaf);
+				this.addLeaf(new this.tree.classList[leafSrc.lclass](this,this,leafSrc));
 			} catch (e) {
 				console.log("Leaf parsing error: ", e);
 			}

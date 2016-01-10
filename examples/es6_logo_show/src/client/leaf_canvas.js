@@ -13,16 +13,16 @@ export default class LeafCanvas extends LeafDOMObject
 		this.cv = this.getDocument().createElement('canvas');
 		this.cv.width = this.width;
 		this.cv.height = this.height;
-		this.cv.onclick = (e) => {this.emitChildren("LeafInputProc", "*", "onclick", {e:e});};
-		this.cv.oncontextmenu = (e) => {this.emitChildren("LeafInputProc", "*", "oncontextmenu", {e:e});};
-		this.cv.ondblclick = (e) => {this.emitChildren("LeafInputProc", "*", "ondblclick", {e:e});};
-		this.cv.onmousedown = (e) => {this.emitChildren("LeafInputProc", "*", "onmousedown", {e:e});};
-		this.cv.onmouseenter = (e) => {this.emitChildren("LeafInputProc", "*", "onmouseenter", {e:e});};
-		this.cv.onmouseleave = (e) => {this.emitChildren("LeafInputProc", "*", "onmouseleave", {e:e});};
-		this.cv.onmousemove = (e) => {this.emitChildren("LeafInputProc", "*", "mousemove", {e:e});};
-		this.cv.onmouseover = (e) => {this.emitChildren("LeafInputProc", "*", "onmouseover", {e:e});};
-		this.cv.onmouseout = (e) => {this.emitChildren("LeafInputProc", "*", "onmouseout", {e:e});};
-		this.cv.onmouseup = (e) => {this.emitChildren("LeafInputProc", "*", "onmouseup", {e:e});};
+		this.cv.onclick = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onclick", e:e});};
+		this.cv.oncontextmenu = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"oncontextmenu", e:e});};
+		this.cv.ondblclick = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"ondblclick", e:e});};
+		this.cv.onmousedown = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmousedown", e:e});};
+		this.cv.onmouseenter = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseenter", e:e});};
+		this.cv.onmouseleave = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseleave", e:e});};
+		this.cv.onmousemove = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmousemove", e:e});};
+		this.cv.onmouseover = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseover", e:e});};
+		this.cv.onmouseout = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseout", e:e});};
+		this.cv.onmouseup = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseup", e:e});};
 		this.parentElement.getElement().appendChild(this.cv);
 		this.cx = this.cv.getContext("2d");
 		this.onNewFrame();
@@ -35,6 +35,7 @@ export default class LeafCanvas extends LeafDOMObject
 	
 	///Special render method for canvas
 	renderCanvas() {
+		this.cx.clearRect(0, 0, this.cv.width, this.cv.height);
 		if (typeof(this.cx) === "object")
 			this.emitChildren("LeafCanvasObject", "*", "render", {cx: this.cx});
 	}
