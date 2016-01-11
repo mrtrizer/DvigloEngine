@@ -13,16 +13,16 @@ export default class LeafCanvas extends LeafDOMObject
 		this.cv = this.getDocument().createElement('canvas');
 		this.cv.width = this.width;
 		this.cv.height = this.height;
-		this.cv.onclick = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onclick", e:e});};
-		this.cv.oncontextmenu = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"oncontextmenu", e:e});};
-		this.cv.ondblclick = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"ondblclick", e:e});};
-		this.cv.onmousedown = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmousedown", e:e});};
-		this.cv.onmouseenter = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseenter", e:e});};
-		this.cv.onmouseleave = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseleave", e:e});};
-		this.cv.onmousemove = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmousemove", e:e});};
-		this.cv.onmouseover = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseover", e:e});};
-		this.cv.onmouseout = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseout", e:e});};
-		this.cv.onmouseup = (e) => {this.emitChildren("LeafInputCtrl", "*", "input", {type:"onmouseup", e:e});};
+		this.cv.onclick = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onclick", e:e});};
+		this.cv.oncontextmenu = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"oncontextmenu", e:e});};
+		this.cv.ondblclick = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"ondblclick", e:e});};
+		this.cv.onmousedown = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmousedown", e:e});};
+		this.cv.onmouseenter = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseenter", e:e});};
+		this.cv.onmouseleave = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseleave", e:e});};
+		this.cv.onmousemove = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmousemove", e:e});};
+		this.cv.onmouseover = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseover", e:e});};
+		this.cv.onmouseout = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseout", e:e});};
+		this.cv.onmouseup = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseup", e:e});};
 		this.parentElement.getElement().appendChild(this.cv);
 		this.cx = this.cv.getContext("2d");
 		this.onNewFrame();
@@ -37,7 +37,7 @@ export default class LeafCanvas extends LeafDOMObject
 	renderCanvas() {
 		this.cx.clearRect(0, 0, this.cv.width, this.cv.height);
 		if (typeof(this.cx) === "object")
-			this.emitChildren("LeafCanvasObject", "*", "render", {cx: this.cx});
+			this.emitChildren("CanvasObject", "*", "render", {cx: this.cx});
 	}
 	
 	///Render event listener

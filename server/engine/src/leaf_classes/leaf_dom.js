@@ -20,7 +20,7 @@ export default class LeafDOM extends LeafDOMObject
 	}
 	
 	onNewFrame() {
-		this.emitChildren("LeafDOMObject", "*", "render", {document: this.document});
+		this.emitChildren("DOMObject", "*", "render", {document: this.document});
 		setTimeout(()=>this.onNewFrame(), this.update_period || 1000);
 	}
 	

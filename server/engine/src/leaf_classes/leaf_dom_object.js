@@ -10,13 +10,13 @@ export default class LeafDOMObject extends Leaf
 	
 	///Checks is no any other LeafDOMObject in current object and searches parrent
 	init() {
-		if (this.object.getLeafsByClass("LeafDOMObject").length > 1)
+		if (this.object.getLeafsByClass("DOMObject").length > 1)
 			throw new Error("You can add only one LeafDOMObject in object.");
-		var domObj = this.object.findParent("LeafDOMObject");
-		if (this.lclass != "LeafDOM") {
+		var domObj = this.object.findParent("DOMObject");
+		if (this.lclass != "DOM") {
 			if (domObj === null)
-				throw new Error("LeafDOMObject has no parents. Add LeafDOM to the top of hierarchy.");
-			this.parentElement = domObj.getLeafsByClass("LeafDOMObject")[0];
+				throw new Error("DOMObject has no parents. Add LeafDOM to the top of hierarchy.");
+			this.parentElement = domObj.getLeafsByClass("DOMObject")[0];
 		} else
 			this.parentElement = undefined;
 	}

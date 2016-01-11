@@ -17,7 +17,7 @@ export default class LeafCanvasGraphics extends Leaf {
 	
 	selectPoint(e) {
 		if (MathTools.isInRect(e.args.pos, {x: this.x - 5, y: this.y - 5, width: 10, height: 10})) {
-			object.getLeafByClass("LeafCanvasObject").selected = true;
+			object.getLeafByClass("CanvasObject").selected = true;
 		}
 	}
 	

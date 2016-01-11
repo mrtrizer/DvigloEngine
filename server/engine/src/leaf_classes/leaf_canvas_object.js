@@ -16,7 +16,7 @@ export default class LeafCanvasObject extends Leaf
 	render(e,args) {
 		args.cx.save();
 		args.cx.translate(this.x, this.y);
-		for (let leaf of this.object.getLeafsByClass("LeafCanvasGraphics"))
+		for (let leaf of this.object.getLeafsByClass("CanvasGraphics"))
 			leaf.render(args.cx);
 		args.cx.restore();
 	}
@@ -27,7 +27,7 @@ export default class LeafCanvasObject extends Leaf
 	}
 	
 	get rect() {
-		var graphics = this.object.getLeafsByClass("LeafCanvasGraphics");
+		var graphics = this.object.getLeafsByClass("CanvasGraphics");
 		if (graphics.length < 0)
 			return {x:this.x, y:this.y, width:0, height:0}; 
 		else {
