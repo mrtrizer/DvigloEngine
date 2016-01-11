@@ -10,7 +10,6 @@
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.0",
     "gulp-batch": "^1.0.5",
-    "gulp-cli": "^1.1.0",
     "gulp-rigger": "^0.5.8",
     "gulp-sourcemaps": "^1.6.0",
     "path": "^0.12.7",

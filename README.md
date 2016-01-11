@@ -11,7 +11,7 @@ To install:
 ##Start server
 To start example project:
 
-	node server/server.js start examples/es6_logo_show
+	node server/server.js start examples/tree_test
 
 ##Create own project (not implemented)
 To init new project:
