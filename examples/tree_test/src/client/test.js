@@ -1,14 +1,22 @@
 import LeafInputCtrl from "leaf_input_ctrl.js";
 import {loadTree} from "engine.js";
 import {MathTools} from "tools.js";
+import TemplateCanvasObj from "template_canvas_obj.js";
 
 ///@addtogroup TreeInit
 ///@{
 
+var canvasObj = new TemplateCanvasObj({leafs: [{lclass: "CanvasRect",data: {width: 5,height: 5,fill_style: "red"}}]});
+
 class LeafPlayerCtrl extends LeafInputCtrl {
+	
+	init() {
+	}
+	
 	input (e,args) {
 		if (args.type === "onclick")
-			this.neighbor("CanvasRect").fill_style = "black";
+			canvasObj.applyTo(this.object.parent("Canvas"), {x: args.e.clientX, y: args.e.clientY});
+			//TODO: this.parent("Canvas").apply("RedBullet",{x: args.x, y: args.y});
 		if (args.type === "onmousemove") {
 			this.neighbor("CanvasObject").x = args.e.clientX;
 			this.neighbor("CanvasObject").y = args.e.clientY;
@@ -26,10 +34,10 @@ class LeafPlayerCtrl extends LeafInputCtrl {
 var objectTreeSource = { 
 	id: "root",leafs: [{lclass: "DOM", data: {update_period:2000}}],
 	objects: [
-		{leafs: [{lclass: "DOMElement", data: {type:"div",style:"width:100px; height:100px; background-color:#666; left: 300px; top: 0px; position:absolute"}}
+		{leafs: [{lclass: "DOMElement", data: {type:"div",style:"width:300px; height:30px; background-color:#666;"}}
 			],
 		objects: [
-			{leafs: [{lclass: "DOMElement",data: {type:"div", style:"width:50px; height:50px; background-color:#222; left: 0px; position:absolute"}}
+			{leafs: [{lclass: "DOMElement",data: {type:"div", style:"width:30px; height:30px; background-color:#222;"}}
 			]}
 		]},
 		{id: "canvas",
@@ -39,16 +47,15 @@ var objectTreeSource = {
 				{id: "player",
 				leafs: [{lclass: "PlayerCtrl"},
 						{lclass: "CanvasObject", data: {x: 110,y: 110}},
-						{lclass: "CanvasRect",data: {x: 0,y: 0,	width: 50,height: 50,fill_style: "blue"	}}
+						{lclass: "CanvasRect",data: {width: 50,height: 50,fill_style: "blue"	}}
 						]},
 				{id: "ball",
 				leafs: [{lclass: "CanvasObject", data: {x: 40,y: 70}},
-						{lclass: "CanvasRect",data: {x: 0,y: 0,	width: 50,height: 70,fill_style: "green"}},
-						{lclass: "CanvasRect",data: {x: 10,y: 10,width: 30,height: 50,fill_style: "red"},mode:"dev"}
+						{lclass: "CanvasRect",data: {width: 30,height: 30,fill_style: "green"}},
 						]},
 				{id: "box",
 				leafs: [{lclass: "CanvasObject", data: {x: 70,y: 30}},
-						{lclass: "CanvasRect",data: {x: 0,y: 0,	width: 30,height: 30,fill_style: "#666"}}
+						{lclass: "CanvasRect",data: {width: 30,height: 30,fill_style: "#666"}}
 						]}
 			]},
 		]

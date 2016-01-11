@@ -1,6 +1,6 @@
-import Obj from "./obj.js";
-import LeafEvent from "./leaf_event.js";
-import Leaf from "../leaf_classes/leaf.js";
+import Obj from "obj.js";
+import LeafEvent from "leaf_event.js";
+import Leaf from "leaf.js";
 import {SystemTools} from "tools.js";
 
 ///@addtogroup Core

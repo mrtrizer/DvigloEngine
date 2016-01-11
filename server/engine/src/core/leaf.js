@@ -9,11 +9,17 @@ export default class Leaf {
 		}
 	}
 	
-	constructor(object,tree,leafSrc) {
+	static createLeaf(obj, leafSrc) {
+		if (typeof (leafSrc.lclass) != "string")
+			throw new Error("Invalid leaf class id. It has to be string.");
+		return new obj.tree.classList[leafSrc.lclass](obj,leafSrc);
+	}
+	
+	constructor(object,leafSrc) {
 		if (typeof(leafSrc.lclass) !== "string")
 			throw new Error("Leaf without lclass field.");
 		this.object = object;
-		this.tree = tree;
+		this.tree = object.tree;
 		this.id = leafSrc.id || null;
 		this.lclass = leafSrc.lclass;
 		this.mode = leafSrc.mode || "*";
