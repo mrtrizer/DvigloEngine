@@ -1,9 +1,22 @@
 /*!
 @page TreeStructure
 # Tree object structure
-Every object contains leafs, which add different kinds of behavior to objects.<br>
-All leafs extend Leaf class.<br>
-For example, tree with 2dcanvas, image, rectangle and physic:<br>
+The tree object structure is a core of DvigloEngine. A tree
+consist of objects, containing another objects. An object on the top of hierarchy
+is a tree's root. Tree can't exist without a root object. Object performs next functions:
+- Object contains another objects.
+- Object contains leafs, defining object's functionality, like methods in classes.
+- Object gives you tools for search another objects in a tree.
+The leaf role in this structure is more interesting. Leafs generate events and process them.
+Thus you can create Canvas leaf and CanvasObject leafs. Than you can place 
+CanvasObjects lower in hierarchy, and generate redraw event for CanvasObjects in a Canvas leaf. All
+objects below an object with Canvas leaf will get your event and may process it. 
+Moreover, you can add Phisics engine to your tree, Box2D for example. For this purpose you need
+create leaf, containing "physic world" and add collider leafs in child objects. So, you need 
+write code for all this things, but in future you can easy use it again with any other graphics 
+and share with other developers. For example, you can replace 2d canvas with WebGL canvas 
+to improve performance. Or you can extend CanvasObject to skelet animation and replace it in all desired objects.
+A graph below illustrates this mechanism.
 @dot
 digraph Experiment {
 		size ="5";
@@ -11,6 +24,7 @@ digraph Experiment {
 		object1 [shape = box, label = "Obj"]; 
 		leaf1 [shape = ellipse, label = "LeafCanvas"]; 
 		leaf2 [shape = ellipse, label = "LeafInputMgr"]; 
+		leaf3 [shape = ellipse, label = "LeafBox2D"]; 
 		object2 [shape = box, label = "Obj"]; 
 		leaf11 [shape = ellipse, label = "LeafCanvasObject"]; 
 		leaf12 [shape = ellipse, label = "LeafCanvasImage"]; 
