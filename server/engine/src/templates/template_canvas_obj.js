@@ -24,6 +24,7 @@ export default class TemplateCanvasObj extends Template {
 		if (Array.isArray(params.leafs)) {
 			for (let leafSrc of params.leafs) {
 				let leaf = Leaf.createLeaf(obj,leafSrc);
+				leaf.init();
 				object.addLeaf(leaf);
 			}
 		}
