@@ -1,12 +1,13 @@
 /*!
 @page TreeStructure
 # Tree object structure
-The tree object structure is a core of DvigloEngine. A tree
+A tree of objects is a core of DvigloEngine. The tree
 consist of objects, containing another objects. An object on the top of hierarchy
-is a tree's root. Tree can't exist without a root object. Object performs next functions:
+is a tree's root. Tree can't exist without a root object. Object performs following functions:
 - Object contains another objects.
 - Object contains leafs, defining object's functionality, like methods in classes.
 - Object gives you tools for search another objects in a tree.
+
 The leaf role in this structure is more interesting. Leafs generate events and process them.
 Thus you can create Canvas leaf and CanvasObject leafs. Than you can place 
 CanvasObjects lower in hierarchy, and generate redraw event for CanvasObjects in a Canvas leaf. All
