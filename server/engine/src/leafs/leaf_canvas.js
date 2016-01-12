@@ -13,16 +13,16 @@ export default class LeafCanvas extends LeafDOMObject
 		this.cv = this.getDocument().createElement('canvas');
 		this.cv.width = this.width;
 		this.cv.height = this.height;
-		this.cv.onclick = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onclick", e:e});};
-		this.cv.oncontextmenu = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"oncontextmenu", e:e});};
-		this.cv.ondblclick = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"ondblclick", e:e});};
-		this.cv.onmousedown = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmousedown", e:e});};
-		this.cv.onmouseenter = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseenter", e:e});};
-		this.cv.onmouseleave = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseleave", e:e});};
-		this.cv.onmousemove = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmousemove", e:e});};
-		this.cv.onmouseover = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseover", e:e});};
-		this.cv.onmouseout = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseout", e:e});};
-		this.cv.onmouseup = (e) => {this.emitChildren("InputCtrl", "*", "input", {type:"onmouseup", e:e});};
+		this.cv.onclick = (e) => {this.mouseEvent("onclick",e);};
+		this.cv.oncontextmenu = (e) => {this.mouseEvent("oncontextmenu", e);};
+		this.cv.ondblclick = (e) => {this.mouseEvent("ondblclick", e);};
+		this.cv.onmousedown = (e) => {this.mouseEvent("onmousedown", e);};
+		this.cv.onmouseenter = (e) => {this.mouseEvent("onmouseenter", e);};
+		this.cv.onmouseleave = (e) => {this.mouseEvent("onmouseleave", e);};
+		this.cv.onmousemove = (e) => {this.mouseEvent("onmousemove", e);};
+		this.cv.onmouseover = (e) => {this.mouseEvent("onmouseover", e);};
+		this.cv.onmouseout = (e) => {this.mouseEvent("onmouseout", e);};
+		this.cv.onmouseup = (e) => {this.mouseEvent("onmouseup", e);};
 		this.parentElement.getElement().appendChild(this.cv);
 		this.cx = this.cv.getContext("2d");
 		this.onNewFrame();
@@ -31,6 +31,16 @@ export default class LeafCanvas extends LeafDOMObject
 	onNewFrame() {
 		this.renderCanvas();
 		this.getWindow().requestAnimationFrame(() => this.onNewFrame());
+	}
+	
+	mouseEvent(type, e) {
+		var boundRect = this.cv.getBoundingClientRect();
+		var args = {
+			type:type, 
+			e:e, 
+			x:e.clientX - boundRect.left, 
+			y:e.clientY - boundRect.top};
+		this.emitChildren("InputCtrl", "*", "input", args);
 	}
 	
 	///Special render method for canvas

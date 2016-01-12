@@ -15,16 +15,16 @@ class LeafPlayerCtrl extends LeafInputCtrl {
 	
 	input (e,args) {
 		if (args.type === "onclick")
-			canvasObj.applyTo(this.object.parent("Canvas"), {x: args.e.clientX, y: args.e.clientY});
+			canvasObj.applyTo(this.object.parent("Canvas"), {x: args.x, y: args.y});
 			//TODO: this.parent("Canvas").apply("RedBullet",{x: args.x, y: args.y});
 		if (args.type === "onmousemove") {
-			this.neighbor("CanvasObject").x = args.e.clientX;
-			this.neighbor("CanvasObject").y = args.e.clientY;
+			this.neighbor("CanvasObject").x = args.x;
+			this.neighbor("CanvasObject").y = args.y;
 			let rects = this.object.parent("Canvas").children("CanvasRect");
 			for (let rect of rects) {
 				let rectLeaf = rect.leaf("CanvasRect");
 				let canvasObjLeaf = rect.leaf("CanvasObject");
-				if (MathTools.isInRect({x:args.e.clientX, y:args.e.clientY},canvasObjLeaf.rect))
+				if (MathTools.isInRect({x:args.x, y:args.y},canvasObjLeaf.rect))
 					this.neighbor("CanvasRect").fill_style = rectLeaf.fill_style;
 			}
 		}
