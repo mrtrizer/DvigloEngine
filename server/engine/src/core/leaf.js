@@ -63,17 +63,12 @@ export default class Leaf {
 			this[event.method](event,event.args);
 	}
 	
-	///Searches a list of neighbour by class
-	findNeighbors(leafClass) {
-		return this.object.getLeafsByClass(leafClass);
-	}
-	
 	///Searches leafs from children by leaf class and object id
-	findChildrenLieafs(leafClass, id) {
-		var objectList = this.object.findChildren(leafClass, id);
+	childrenLeafs(leafClass, id) {
+		var objectList = this.object.children(leafClass, id);
 		var leafList = [];
 		for (let object of objectList)
-			leafList = leafList.concat(object.getLeafsByClass(leafClass));
+			leafList = leafList.concat(object.leafs(leafClass));
 		return leafList;
 	}
 	
@@ -85,7 +80,7 @@ export default class Leaf {
 	
 	///[Experimental]
 	neighbors(leafClass = "*") {
-		return this.findNeighbors(leafClass);
+		return this.object.leafs(leafClass);
 	}
 	
 	///Simplified event sending to children
@@ -94,6 +89,6 @@ export default class Leaf {
 	///@param method event name (liaf's method)
 	///@param args event arguments
 	emitChildren(leafClass, id, method, args = {}) {
-		this.object.emit(this.findChildrenLieafs(leafClass, id), new LeafEvent(method, args));
+		this.object.emit(this.childrenLeafs(leafClass, id), new LeafEvent(method, args));
 	}
 }

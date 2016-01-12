@@ -27,12 +27,12 @@ export default class Obj {
 	
 	///[Experimental] Searches objects among all children
 	children(leafClass = "*", id = "*") {
-		return this.findChildren(leafClass,id);
+		return this.tree.findChildren(this,leafClass,id);
 	}
 	
 	///[Experimental] Returns parent
 	parent(leafClass = "*", id = "*") {
-		return this.findParent(leafClass,id);
+		return this.tree.findParent(this,leafClass,id);
 	}
 	
 	///[Experimental] Returns direct children of the object 
@@ -48,23 +48,23 @@ export default class Obj {
 	
 	///[Experimental] Returns liafs from object
 	leafs(leafClass = "*") {
-		return this.tree.findLeafsInObjByClass(this, leafClass);
+		if (typeof(this.tree.classList[leafClass]) !== "function") {
+			console.log("WARNING: Leaf class", leafClass, "is not defined");
+			return [];
+		}
+		return this.findLeafsInObj(leaf => {
+			return leaf instanceof this.tree.classList[leafClass]
+		})
 	}
 	
-	///Searches children
-	findChildren(leafClass, id) {
-		return this.tree.findChildren(this, leafClass, id);
-	}
-
-	///Searches a parrent
-	findParent(leafClass, id) {
-		return this.tree.findParent(this, leafClass, id);
-	}
-	
-	///Seaches an object in a tree
-	findObj(leafClass, id) {
-		return this.tree.findChildren(this.tree.root, leafClass, id);
-	}
+	///Searches leaf in object using func for checking
+	findLeafsInObj(func) {
+		var list = [];
+		for (let leaf of this.leafs_)
+			if (func(leaf))
+				list.push(leaf);
+		return list;
+	}	
 	
 	///Send event to all listeners
 	///@see ObjTree.emit()
@@ -82,16 +82,6 @@ export default class Obj {
 	addChild(obj) {
 		obj.parent_ = this;
 		this.objects_.push(obj);
-	}
-	
-	///Returns a leaf of current object by class
-	getLeafsByClass(leafClass) {
-		return this.tree.findLeafsInObjByClass(this, leafClass);
-	}
-	
-	///Returns a leaf of current object by id
-	getLeafById(id) {
-		return this.tree.findLeafInObj(this, leaf => leaf.id == id);
 	}
 	
 	///Method creates Obj elements and adds leafs

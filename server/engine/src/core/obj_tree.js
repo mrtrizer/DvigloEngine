@@ -43,17 +43,6 @@ export default class ObjTree {
 		return this.root.toJSON();
 	}
 
-	///Returns a leaf of object by class
-	findLeafsInObjByClass(obj, leafClass) {
-		if (typeof(this.classList[leafClass]) !== "function") {
-			console.log("WARNING: Leaf class", leafClass, "is not defined");
-			return [];
-		}
-		return this.findLeafsInObj(obj, leaf => {
-			return leaf instanceof this.classList[leafClass]
-		})
-	}
-
 	isFitToCondition_(obj, leafClass = "*", id = "*") {
 		var fit = true;
 		if (typeof(leafClass) !== "string")
@@ -61,7 +50,7 @@ export default class ObjTree {
 		if (typeof(id) !== "string")
 			throw new Error("id has to be a string");
 		if (leafClass != "*")
-			fit = fit && this.findLeafsInObjByClass(obj, leafClass).length > 0;
+			fit = fit && obj.leafs(leafClass).length > 0;
 		if (id != "*")
 			fit = obj.id == id && fit;
 		return fit;
@@ -99,15 +88,6 @@ export default class ObjTree {
 			for (let leaf of listeners)
 				leaf.procEvent(event);
 		}
-	}
-	
-	///Searches leaf in object using func for checking
-	findLeafsInObj(object,func) {
-		var list = [];
-		for (let leaf of object.leafs_)
-			if (func(leaf))
-				list.push(leaf);
-		return list;
 	}
 	
 	findObjBy_(objects, func) {
