@@ -46,4 +46,3 @@ As you can't change index.html, your script runs right after body initialization
 	}
 
 Now you can init an object tree here. I have an idea to move this code to the core in future and give only control for object tree and it's leafs. But now I follow a simplest way.
-*/
