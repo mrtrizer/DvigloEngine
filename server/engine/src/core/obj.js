@@ -25,60 +25,83 @@ export default class Obj {
 		return jsonData;
 	}
 	
-	///[Experimental] Searches objects among all children
+	///Search objects among all children
+	///@see Obj.isFitTo()
 	children(leafClass = "*", id = "*") {
-		return this.tree.findChildren(this,leafClass,id);
+		return this.findObjects([this], obj => obj.isFitTo(leafClass, id));
 	}
 	
-	///[Experimental] Returns parent
+	///Check if class fit to condition
+	///@param leafClass target class of leaf
+	///@param id target object id
+	isFitTo(leafClass = "*", id = "*") {
+		var fit = true;
+		if (typeof(leafClass) !== "string")
+			throw new Error("leafClass has to be a string");
+		if (typeof(id) !== "string")
+			throw new Error("id has to be a string");
+		if (leafClass != "*")
+			fit = fit && this.leafs(leafClass).length > 0;
+		if (id != "*")
+			fit = this.id === id && fit;
+		return fit;
+	}
+	
+	///Return parent which fit to request
+	///@see Obj.isFitTo()
 	parent(leafClass = "*", id = "*") {
 		return this.tree.findParent(this,leafClass,id);
 	}
 	
-	///[Experimental] Returns direct children of the object 
+	///Return only direct appropriate children of the object
+	///@see Obj.isFitTo()
 	objects(leafClass = "*", id = "*") {
 		throw new Error("Not implementd");
 	}
 	
-	///[Experimental] Returns first appropriate leaf
+	///Return first appropriate leaf
+	///@see Obj.leafs()
 	leaf(leafClass = "*") {
 		var leafs = this.leafs(leafClass);
 		return leafs.length > 0? leafs[0] : undefined;
 	}
 	
-	///[Experimental] Returns liafs from object
+	///Search leafs with passed leafClass
+	///@param leafClass target leaf class
 	leafs(leafClass = "*") {
 		if (typeof(this.tree.classList[leafClass]) !== "function") {
 			console.log("WARNING: Leaf class", leafClass, "is not defined");
 			return [];
 		}
-		return this.findLeafsInObj(leaf => {
+		return this.findLeafs(leaf => {
 			return leaf instanceof this.tree.classList[leafClass]
 		})
 	}
 	
-	///Searches leaf in object using func for checking
-	findLeafsInObj(func) {
+	///Search leafs in the object using func for verification
+	///@param func verification function
+	findLeafs(func) {
 		var list = [];
 		for (let leaf of this.leafs_)
 			if (func(leaf))
 				list.push(leaf);
 		return list;
-	}	
+	}
 	
-	///Send event to all listeners
 	///@see ObjTree.emit()
 	emit(listeners,event) {
 		return this.tree.emit(listeners,event);
 	}
 	
-	///Adds new leaf to the object
+	///Add a new leaf to the object
+	///@param leaf instance of Leaf or it's inheritor
 	addLeaf(leaf) {
 		leaf.object = this;
 		this.leafs_.push(leaf);
 	}
 	
-	///Adds an object as child
+	///Add a child object
+	///@param obj instance of Obj
 	addChild(obj) {
 		obj.parent_ = this;
 		this.objects_.push(obj);
@@ -101,6 +124,25 @@ export default class Obj {
 		if (typeof(src.objects) === "object")
 			for (let curObjectSrc of src.objects)
 				this.addChild(new Obj(this.tree, curObjectSrc, this));
+	}
+	
+	///Search objects among passed objects and their children using verification function 
+	///@param objects an array of objects, or an object
+	///@param func a verification function returning boolean
+	findObjects(objects, func) {
+		var list = [];
+		if (!Array.isArray(objects))
+			objects = [objects];
+		for (let object of objects) {
+			if (func(object))
+				list.push(object);
+			if (typeof(object.objects_) === "object") {
+				var result = this.findObjects(object.objects_, func);
+				if (result != null)
+					list = list.concat(result);
+			}
+		}
+		return list;
 	}
 }
 

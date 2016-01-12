@@ -43,31 +43,14 @@ export default class ObjTree {
 		return this.root.toJSON();
 	}
 
-	isFitToCondition_(obj, leafClass = "*", id = "*") {
-		var fit = true;
-		if (typeof(leafClass) !== "string")
-			throw new Error("leafClass has to be a string");
-		if (typeof(id) !== "string")
-			throw new Error("id has to be a string");
-		if (leafClass != "*")
-			fit = fit && obj.leafs(leafClass).length > 0;
-		if (id != "*")
-			fit = obj.id == id && fit;
-		return fit;
-	}
-
-	///Searches children
-	findChildren(obj, leafClass, id) {
-		return this.findObjBy_([obj], obj => this.isFitToCondition_(obj, leafClass, id));
-	}
-
 	///Searches a parrent. Returns null if can't find.
+	///@see Obj.isFitTo()
 	findParent(obj, leafClass, id) {
 		if (typeof(obj) !== "object")
 			throw Error("Invalid object link");
 		var curObj = obj.parent_;
 		while (typeof(curObj) === "object") {
-			if (this.isFitToCondition_(curObj, leafClass, id))
+			if (curObj.isFitTo(leafClass, id))
 				return curObj;
 			curObj = obj.parent_;
 		}
@@ -88,20 +71,6 @@ export default class ObjTree {
 			for (let leaf of listeners)
 				leaf.procEvent(event);
 		}
-	}
-	
-	findObjBy_(objects, func) {
-		var list = [];
-		for (let object of objects) {
-			if (func(object))
-				list.push(object);
-			if (typeof(object.objects_) === "object") {
-				var result = this.findObjBy_(object.objects_, func);
-				if (result != null)
-					list = list.concat(result);
-			}
-		}
-		return list;
 	}
 }
 

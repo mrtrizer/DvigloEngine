@@ -22,6 +22,7 @@ class LeafPropAny {
 	}
 	
 	///Assigns value to the object, given in constructor after checking
+	///@param new value
 	setValue(value) {
 		if (this.checkValue(value))
 			this.value = value;
@@ -31,16 +32,19 @@ class LeafPropAny {
 		}
 	}
 	
+	///Returns current property value
 	getValue() {
 		return this.value;
 	}
 	
+	///Check is value fit to property type and constrains
 	checkValue(value) {
 		if (value === undefined)
 			return false;
 		return true;
 	}
 	
+	///Returns default value of property
 	getDefValue() {
 		if (this.checkValue(this.params.def))
 			return this.params.def;
@@ -48,11 +52,13 @@ class LeafPropAny {
 			return this.getTypeDefValue();
 	}
 	
+	///Returns default value for current property type
 	getTypeDefValue() {
 		return null;
 	}
 	
 	///Extracts value from JSON data, using name, given in constructor.
+	///@param srcData property list of leaf
 	extract(srcData) {
 		if (typeof(srcData) !== "object")
 			throw new Error("Invalid srcData parameter. It has to be object.");
@@ -185,6 +191,10 @@ var propTypes = {
 	sw:LeafPropSwitch
 };
 
+///Create instance of appropriate property class
+///@param propType property type
+///@param propName property name using for json parsing
+///@param propSrc list of all properties
 export default function createProp(propType, propName, propSrc) {
 	if (propType === undefined)
 		propType = "any";

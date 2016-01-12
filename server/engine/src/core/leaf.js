@@ -4,11 +4,15 @@ import createProp from "leaf_prop.js";
 
 export default class Leaf {
 	
+	///Returns property list of current leaf. Reimplement it in child classes.
 	static getPropList() {
 		return {
 		}
 	}
 	
+	///Creates an instance of Leaf of appropriate class
+	///@param obj container for leaf
+	///@param leafSrc JSON source of leaf
 	static createLeaf(obj, leafSrc) {
 		if (typeof (leafSrc.lclass) != "string")
 			throw new Error("Invalid leaf class id. It has to be string.");
@@ -58,12 +62,14 @@ export default class Leaf {
 	}
 	
 	///Calls corresponding to event method
+	///@param event an instance of LeafEvent
 	procEvent(event) {
 		if (typeof(this[event.method]) === "function")
 			this[event.method](event,event.args);
 	}
 	
 	///Searches leafs from children by leaf class and object id
+	///@see Obj.children(), Obj.leafs()
 	childrenLeafs(leafClass, id) {
 		var objectList = this.object.children(leafClass, id);
 		var leafList = [];
@@ -72,13 +78,15 @@ export default class Leaf {
 		return leafList;
 	}
 	
-	///[Experimental]
+	///Returns first appropriate neighbor of current leaf
+	///@see Leaf.neighbors()
 	neighbor(leafClass = "*") {
 		var neighbors = this.neighbors(leafClass);
 		return neighbors.length > 0? neighbors[0]: undefined;
 	}
 	
-	///[Experimental]
+	///Search neighbors of current leaf
+	///@see Obj.leafs()
 	neighbors(leafClass = "*") {
 		return this.object.leafs(leafClass);
 	}
