@@ -355,7 +355,7 @@ function initGulp(projectPath, params) {
                 debug: true,
                 plugin: (plugin || []),
                 paths: [
-                    path.resolve(config.engine_path, "src/leafs"),
+                    path.resolve(config.engine_path, "src/leaftypes"),
                     path.resolve(config.engine_path, "src/templates"),
                     path.resolve(config.engine_path, "src/core"),
                 ]
