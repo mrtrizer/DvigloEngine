@@ -1,7 +1,7 @@
-import Res from "res.js";
+import Res from "res_img.js";
 
-export default class ResImg {
-	constructor (src,ready,error) {
+export default class ResModifier extends Res {
+  constructor (src,ready,error) {
 		super(src);
 		if (typeof(src.url !== "string")
 			throw new Error("Invalid url param. URL has to be a string.");
@@ -10,10 +10,10 @@ export default class ResImg {
 	}
 
 	update(ready,error) {
-
+	   ready();
 	}
 
 	isReady() {
-	
+	   return true;
 	}
 }

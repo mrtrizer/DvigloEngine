@@ -1,7 +1,7 @@
 ///@addtogroup Core
 
 ///@addtogroup Tools
-///Tools are used everywhere. Some code written in old style and most of it 
+///Tools are used everywhere. Some code written in old style and most of it
 ///I wrote when was a beginner. It has to be refactored and rewritten at some parts.
 ///@{
 
@@ -16,6 +16,11 @@ export class SystemTools {
 			proto = Object.getPrototypeOf(proto);
 		} while (Object.getPrototypeOf(proto) !== null)
 		return parrentList.reverse();
+	}
+
+	static checkType(obj,type) {
+		if (obj instanceof type)
+			throw
 	}
 }
 
@@ -78,11 +83,11 @@ export class HTTPClient
 		this.apiId = apiId;
 	}
 
-	serialize (obj) 
+	serialize (obj)
 	{
 		var str = [];
 		for(var p in obj)
-		if (obj.hasOwnProperty(p)) 
+		if (obj.hasOwnProperty(p))
 			str.push(encodeURIComponent(p) + "=" + JSON.stringify(obj[p]));
 		return str.join("&");
 	}
@@ -158,18 +163,18 @@ MathTools.getIterPoint = function (p1, p2, p3, p4)
 	var d = (p1.x - p2.x) * (p4.y - p3.y) - (p1.y - p2.y) * (p4.x - p3.x);
 	var da = (p1.x - p3.x) * (p4.y - p3.y) - (p1.y - p3.y) * (p4.x - p3.x);
 	var db = (p1.x - p2.x) * (p1.y - p3.y) - (p1.y - p2.y) * (p1.x - p3.x);
- 
+
 	var ta = da / d;
 	var tb = db / d;
- 
+
 	if (ta >= 0 && ta <= 1 && tb >= 0 && tb <= 1)
 	{
 		var dx = p1.x + ta * (p2.x - p1.x);
 		var dy = p1.y + ta * (p2.y - p1.y);
- 
+
 		return {dx:dx, dy:dy};
 	}
- 
+
 	return null;
 }
 
@@ -214,11 +219,11 @@ MathTools.getDist = function(from, to)
 }
 
 MathTools.MD5 =  function (string) {
- 
+
     function RotateLeft(lValue, iShiftBits) {
         return (lValue<<iShiftBits) | (lValue>>>(32-iShiftBits));
     }
- 
+
     function AddUnsigned(lX,lY) {
         var lX4,lY4,lX8,lY8,lResult;
         lX8 = (lX & 0x80000000);
@@ -239,32 +244,32 @@ MathTools.MD5 =  function (string) {
             return (lResult ^ lX8 ^ lY8);
         }
      }
- 
+
      function F(x,y,z) { return (x & y) | ((~x) & z); }
      function G(x,y,z) { return (x & z) | (y & (~z)); }
      function H(x,y,z) { return (x ^ y ^ z); }
     function I(x,y,z) { return (y ^ (x | (~z))); }
- 
+
     function FF(a,b,c,d,x,s,ac) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     };
- 
+
     function GG(a,b,c,d,x,s,ac) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     };
- 
+
     function HH(a,b,c,d,x,s,ac) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     };
- 
+
     function II(a,b,c,d,x,s,ac) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     };
- 
+
     function ConvertToWordArray(string) {
         var lWordCount;
         var lMessageLength = string.length;
@@ -287,7 +292,7 @@ MathTools.MD5 =  function (string) {
         lWordArray[lNumberOfWords-1] = lMessageLength>>>29;
         return lWordArray;
     };
- 
+
     function WordToHex(lValue) {
         var WordToHexValue="",WordToHexValue_temp="",lByte,lCount;
         for (lCount = 0;lCount<=3;lCount++) {
@@ -297,15 +302,15 @@ MathTools.MD5 =  function (string) {
         }
         return WordToHexValue;
     };
- 
+
     function Utf8Encode(string) {
         string = string.replace(/\r\n/g,"\n");
         var utftext = "";
- 
+
         for (var n = 0; n < string.length; n++) {
- 
+
             var c = string.charCodeAt(n);
- 
+
             if (c < 128) {
                 utftext += String.fromCharCode(c);
             }
@@ -318,25 +323,25 @@ MathTools.MD5 =  function (string) {
                 utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                 utftext += String.fromCharCode((c & 63) | 128);
             }
- 
+
         }
- 
+
         return utftext;
     };
- 
+
     var x=Array();
     var k,AA,BB,CC,DD,a,b,c,d;
     var S11=7, S12=12, S13=17, S14=22;
     var S21=5, S22=9 , S23=14, S24=20;
     var S31=4, S32=11, S33=16, S34=23;
     var S41=6, S42=10, S43=15, S44=21;
- 
+
     string = Utf8Encode(string);
- 
+
     x = ConvertToWordArray(string);
- 
+
     a = 0x67452301; b = 0xEFCDAB89; c = 0x98BADCFE; d = 0x10325476;
- 
+
     for (k=0;k<x.length;k+=16) {
         AA=a; BB=b; CC=c; DD=d;
         a=FF(a,b,c,d,x[k+0], S11,0xD76AA478);
@@ -408,9 +413,9 @@ MathTools.MD5 =  function (string) {
         c=AddUnsigned(c,CC);
         d=AddUnsigned(d,DD);
     }
- 
+
     var temp = WordToHex(a)+WordToHex(b)+WordToHex(c)+WordToHex(d);
- 
+
     return temp.toLowerCase();
 }
 

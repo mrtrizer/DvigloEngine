@@ -19,32 +19,36 @@ console.log("DVIGLO ENGINE v0.1.0");
 ///Loads an object tree from json
 ///@param objTreeSrc JSON object
 ///@param classList List of using classes
-export function loadTree(objTreeSrc, extClassList) {
-	
+export function loadTree(objTreeSrc, extClassList, extResList) {
+
+	var resList = Object.assign({
+		"ModifierAddObj": ResModifierAddObj
+	}, extResList);
+
 	var classList = Object.assign({
-		"LeafCanvas":LeafCanvas, 
-		"LeafCanvasGraphics":LeafCanvasGraphics, 
-		"LeafCanvasFigure":LeafCanvasFigure, 
-		"LeafCanvasRect":LeafCanvasRect, 
-		"LeafCanvasObject":LeafCanvasObject, 
-		"LeafCanvasImage":Leaf, 
-		"LeafDOM":LeafDOM, 
-		"LeafDOMObject":LeafDOMObject, 
-		"LeafDOMElement":LeafDOMElement, 
+		"LeafCanvas":LeafCanvas,
+		"LeafCanvasGraphics":LeafCanvasGraphics,
+		"LeafCanvasFigure":LeafCanvasFigure,
+		"LeafCanvasRect":LeafCanvasRect,
+		"LeafCanvasObject":LeafCanvasObject,
+		"LeafCanvasImage":Leaf,
+		"LeafDOM":LeafDOM,
+		"LeafDOMObject":LeafDOMObject,
+		"LeafDOMElement":LeafDOMElement,
 		"LeafInputCtrl":LeafInputCtrl,
 		"Leaf":Leaf,
-		"Canvas":LeafCanvas, 
-		"CanvasGraphics":LeafCanvasGraphics, 
-		"CanvasFigure":LeafCanvasFigure, 
-		"CanvasRect":LeafCanvasRect, 
-		"CanvasObject":LeafCanvasObject, 
-		"CanvasImage":Leaf, 
-		"DOM":LeafDOM, 
-		"DOMObject":LeafDOMObject, 
-		"DOMElement":LeafDOMElement, 
+		"Canvas":LeafCanvas,
+		"CanvasGraphics":LeafCanvasGraphics,
+		"CanvasFigure":LeafCanvasFigure,
+		"CanvasRect":LeafCanvasRect,
+		"CanvasObject":LeafCanvasObject,
+		"CanvasImage":Leaf,
+		"DOM":LeafDOM,
+		"DOMObject":LeafDOMObject,
+		"DOMElement":LeafDOMElement,
 		"InputCtrl":LeafInputCtrl
 		}, extClassList);
-	
+
 	if (typeof(document) !== "object")
 		throw Error("DOM is not loaded. Call loadTree() in main().");
 	return new ObjTree(objTreeSrc, classList);
